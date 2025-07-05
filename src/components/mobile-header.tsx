@@ -6,7 +6,7 @@ import { Button } from "./ui/button";
 const Mobileheader = () => {
   return (
     <div className="flex md:hidden fixed z-50 bottom-0 right-0 left-0 top-0 h-14  items-center w-full justify-center pt-10">
-      <div className=" w-[400px] bg-white rounded-full px-4 shadow-md">
+      <div className=" w-[400px] bg-white/80 backdrop-blur-md rounded-full px-4 shadow-md">
         <div className="flex items-center justify-between">
           <Link href={"#"} className="pb-1">
             <img
@@ -17,11 +17,11 @@ const Mobileheader = () => {
           </Link>
           <div className="flex items-center gap-2">
             <div>
-              <Button className="hover:bg-[#030142] h-7 w-24 text-xs font-raleway hover:-translate-y-1 hover:text-white transition-all duration-500 border-2   bg-white text-[#030142] border-[#030142] rounded-full ">
+              <Button className="hover:bg-[#030142] h-7 w-24 text-xs font-raleway hover:-translate-y-1 transition-all duration-500 border-2   bg-transparent text-[#030142] border-[#030142] rounded-full ">
                 Let's Connect
               </Button>
             </div>
-            <Menu />
+            <Menu className="text-bg-[#030142]" />
           </div>
         </div>
       </div>

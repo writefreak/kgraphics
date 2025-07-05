@@ -3,6 +3,7 @@ import { Backdrop } from "@/components/backdrop";
 import Body from "@/components/body";
 import Header from "@/components/header";
 import Mobileheader from "@/components/mobile-header";
+import RecentWorks from "@/components/recent-works";
 import React from "react";
 
 const page = () => {
@@ -14,6 +15,7 @@ const page = () => {
         <Backdrop />
       </div>
       <About />
+      <RecentWorks />
     </div>
   );
 };
