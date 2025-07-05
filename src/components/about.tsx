@@ -9,33 +9,27 @@ import {
 
 const About = () => {
   return (
-    <div className="md:px-14 p-4 grid grid-cols-1 md:grid-cols-2 gap-5 md:py-16">
-      <div className="md:py-0 py-5 border-t md:border-t-0 flex flex-col md:gap-5 gap-3 items-center  md:items-start">
-        <h2 className="md:text-4xl text-2xl font-raleway text-center">
+    <div className="md:px-14 p-4 flex flex-col  gap-8 md:py-16">
+      <div className="md:py-0 py-5 border-t md:border-t-0 flex flex-col gap-3 items-center ">
+        <h2 className="md:text-2xl font-raleway text-center ">
           Why Choose Us?
         </h2>
-        <p className=" text-sm md:text-base font-light w-[20rem] md:w-[34rem]  font-inter">
+        <p className=" text-sm md:text-base font-light w-[20rem] md:w-[34rem] text-center font-inter">
           We give life to your ideas through excellent designs that speak with
           clarity and purpose. Our projects blend soul aesthetics in such a
           harmonic manner that reflects the uniqueness of our clients.
         </p>
       </div>
-      <div className="flex flex-col gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         {about.map((a, index) => (
-          <Accordion
-            key={index}
-            type="single"
-            collapsible
-            className="shadow-md rounded-md px-4"
-            defaultValue="item-1"
-          >
-            <AccordionItem value="item-1" className="">
-              <AccordionTrigger>{a.title}</AccordionTrigger>
-              <AccordionContent className="flex flex-col gap-4 text-balance">
-                <p>{a.desc}</p>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
+          <Card key={index} className="p-4">
+            <div className="flex flex-col gap-3 items-center">
+              <h3 className="text-xl font-raleway font-semibold">{a.title}</h3>
+              <p className="text-[13.5px] font-inter font-light text-center">
+                {a.desc}
+              </p>
+            </div>
+          </Card>
         ))}
       </div>
     </div>
@@ -49,30 +43,39 @@ const about = [
     title: "Purpose",
     desc: `Every design starts with meaning, not just appearance—because we 
     create to communicate, not just decorate.`,
+    svg: "",
+  },
+
+  {
+    title: "Faith",
+    desc: `Rooted in Christian values, our creativity reflects light, hope, 
+    and reverence, especially in spiritually-driven projects.
+
+    `,
+    svg: "",
   },
   {
-    title: "Purpose",
-    desc: `Every design starts with meaning, not just appearance—because we 
-    create to communicate, not just decorate.`,
+    title: "Authenticity",
+    desc: `No templates, no shortcuts—each design is custom-crafted 
+    to reflect your unique message and audience.`,
+    svg: "",
   },
   {
-    title: "Purpose",
-    desc: `Every design starts with meaning, not just appearance—because we 
-    create to communicate, not just decorate.`,
+    title: "Relevance",
+    desc: `We blend youthful insight with design trends to create modern, 
+    platform-aware graphics that truly resonate.`,
+    svg: "",
   },
   {
-    title: "Purpose",
-    desc: `Every design starts with meaning, not just appearance—because we 
-    create to communicate, not just decorate.`,
+    title: "Communication",
+    desc: `From brief to delivery, we collaborate closely, ensuring every client 
+    feels heard, respected, and satisfied.`,
+    svg: "",
   },
   {
-    title: "Purpose",
-    desc: `Every design starts with meaning, not just appearance—because we 
-    create to communicate, not just decorate.`,
-  },
-  {
-    title: "Purpose",
-    desc: `Every design starts with meaning, not just appearance—because we 
-    create to communicate, not just decorate.`,
+    title: "Emotion",
+    desc: `Our work connects beyond visuals—each piece tells a story, evokes feeling, and 
+    empowers clients with pride and clarity.`,
+    svg: "",
   },
 ];
