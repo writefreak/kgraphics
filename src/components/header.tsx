@@ -4,8 +4,8 @@ import { Button } from "./ui/button";
 
 const Header = () => {
   return (
-    <div className="hidden md:flex  fixed top-0 left-0 right-0 z-50 justify-center px-14 pt-7">
-      <div className="flex bg-white/80 backdrop-blur-md shadow-md w-[800px] p-1 px-2 rounded-full items-center justify-between">
+    <div className="hidden md:flex fixed top-0 left-0 right-0 z-50 justify-center px-14 pt-7">
+      <div className="flex bg-white/80 backdrop-blur-md shadow-md md:w-[800px] p-1 px-2 rounded-full items-center justify-between">
         <Link href={"#"} className="h-12 w-12  pb-1">
           <img
             src="/kemilogo.png"

@@ -12,7 +12,7 @@ const About = () => {
   return (
     <div className="md:px-40 p-4 flex flex-col md:gap-8 md:pt-16">
       <div className="md:py-0 py-5 border-t md:border-t-0 flex flex-col gap-3 items-center ">
-        <h2 className="md:text-2xl text-xl font-raleway text-center font-[500]">
+        <h2 className="md:text-3xl text-2xl font-raleway text-center font-[500]">
           Why Choose Us?
         </h2>
         <p className=" text-sm md:text-base font-light w-[20rem] md:w-[34rem] text-center  font-inter">
@@ -23,7 +23,7 @@ const About = () => {
       </div>
       <div className="md:grid hidden md:grid-cols-2 gap-3">
         {about.map((a, index) => (
-          <Card key={index} className="p-4 md:p-5 bg-[#030142] rounded-md">
+          <Card key={index} className="p-4 md:p-7 bg-[#030142] rounded-md">
             <div className="flex flex-col gap-2 items-center md:items-start">
               <h3 className="text-xl font-raleway font-[500] md:text-left text-white">
                 {a.title}
@@ -35,7 +35,7 @@ const About = () => {
           </Card>
         ))}
       </div>
-      <div className="p-4">
+      <div className="">
         <MobileAbout className="md:hidden" />
       </div>
     </div>

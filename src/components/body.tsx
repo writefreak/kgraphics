@@ -25,11 +25,13 @@ const Body = () => {
         </div>
       </div>
 
-      <img
-        src="/Your paragraph text (1).png"
-        alt=""
-        className="md:h-[400px] h-[200px] md:block hidden md:w-[400px] w-[200px] object-cover"
-      />
+      <div className="md:h-[400px] h-[200px] md:block hidden md:w-[400px] w-[200px] ">
+        <img
+          src="/Your paragraph text (1).png"
+          alt=""
+          className="object-cover w-full h-full"
+        />
+      </div>
     </div>
   );
 };

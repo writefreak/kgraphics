@@ -2,6 +2,7 @@ import { Menu } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import { Button } from "./ui/button";
+import { MobileMenu } from "./mobileMenu";
 
 const Mobileheader = () => {
   return (
@@ -17,11 +18,11 @@ const Mobileheader = () => {
           </Link>
           <div className="flex items-center gap-2">
             <div>
-              <Button className="hover:bg-[#030142] h-7 w-24 text-xs font-raleway hover:-translate-y-1 transition-all duration-500 border-2   bg-transparent text-[#030142] border-[#030142] rounded-full ">
+              <Button className="hover:bg-[#030142] hover:text-white h-7 w-24 text-xs font-raleway hover:-translate-y-1 transition-all duration-500 border-2   bg-transparent text-[#030142] border-[#030142] rounded-full ">
                 Let's Connect
               </Button>
             </div>
-            <Menu className="text-bg-[#030142]" />
+            <MobileMenu />
           </div>
         </div>
       </div>

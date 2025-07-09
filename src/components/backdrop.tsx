@@ -4,7 +4,7 @@ import Body from "./body";
 
 export function Backdrop() {
   return (
-    <div className="relative flex w-full md:h-full items-center justify-center bg-white dark:bg-black">
+    <div className="relative flex md:w-full md:h-full items-center justify-center bg-white dark:bg-black">
       <div
         className={cn(
           "absolute inset-0",
