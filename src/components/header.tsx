@@ -26,9 +26,11 @@ const Header = () => {
           ))}
           <span className="absolute left-1/2 -translate-x-1/2 bottom-1 w-0 group-hover:w-full h-0.5 bg-[#030142] transition-all duration-500"></span>
         </div>
-        <Button className="rounded-full bg-transparent text-[#030142] border-2 hover:bg-[#030142] hover:-translate-y-1 hover:text-white transition-all duration-500 border-[#030142]">
-          Let's Connect
-        </Button>
+        <a href={"https://wa.me/09030260393"}>
+          <Button className="rounded-full bg-transparent text-[#030142] border-2 hover:bg-[#030142] hover:-translate-y-1 hover:text-white transition-all duration-500 border-[#030142]">
+            Let's Connect
+          </Button>
+        </a>
       </div>
     </div>
   );

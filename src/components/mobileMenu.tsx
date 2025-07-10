@@ -18,6 +18,7 @@ import { useState } from "react";
 
 export function MobileMenu() {
   const [activeIndex, setActiveIndex] = useState<number>(0);
+
   return (
     <Sheet>
       <SheetTrigger asChild>

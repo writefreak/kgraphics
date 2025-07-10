@@ -5,13 +5,13 @@ import { MobileRecent } from "./mobile-recent";
 const RecentWorks = () => {
   return (
     <div>
-      <div className="md:pt-7 md:py-3 py-14 border-t md:border-t-0 flex flex-col items-center ">
+      <div className="md:pt-7 md:py-3 pt-10 pb-3 border-t md:border-t-0 flex flex-col items-center ">
         <h2 className="md:text-3xl text-2xl font-raleway text-center font-[500]">
           Our Recent Works
         </h2>
         <p>Here's an overview of our most recent projects</p>
       </div>
-      <div className="pt-5 hidden md:block">
+      <div className="pt-5 mx-auto pb-14 hidden md:block">
         <Recent />
       </div>
       <div className="md:hidden overflow-x-hidden pb-7">
