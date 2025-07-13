@@ -9,7 +9,9 @@ const RecentWorks = () => {
         <h2 className="md:text-3xl text-2xl font-raleway text-center font-[500]">
           Our Recent Works
         </h2>
-        <p>Here's an overview of our most recent projects</p>
+        <p className="text-sm font-light">
+          Here's an overview of our most recent projects
+        </p>
       </div>
       <div className="pt-5 mx-auto pb-14 hidden md:block">
         <Recent />

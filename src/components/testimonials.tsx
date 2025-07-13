@@ -1,57 +1,92 @@
-"use client";
+import React from "react";
+import { Card } from "./ui/card";
 
-import React, { useEffect, useState } from "react";
-import { InfiniteMovingCards } from "./ui/infiniteMovingCards";
-// import { MobileReview } from "./mobile-review";
-
-export function Testimonials() {
+const Testimonials = () => {
   return (
-    <div className="rounded-md flex flex-col antialiased bg-white dark:bg-black dark:bg-grid-white/[0.05] items-center justify-center relative overflow-hidden">
-      <div className="md:pt-20 md:pb-3 pt-14">
+    <div className="md:pb-12 pb-6">
+      <div className="md:pt-7 md:pb-8 pt-10 pb-5 flex flex-col items-center ">
         <h2 className="md:text-3xl text-2xl font-raleway text-center font-[500]">
           Client Reviews
         </h2>
-        <p className="">Here's what they're saying about us</p>
+        <p className="font-light font-inter text-sm">
+          Here’s what our valued clients say about us
+        </p>
       </div>
-      <InfiniteMovingCards
-        items={testimonials}
-        direction="right"
-        speed="slow"
-        className="hidden md:block"
-      />
-      {/* <MobileReview /> */}
+      <div className="px-4 md:px-0">
+        <div className="flex md:grid md:grid-cols-3 md:px-40 gap-4 no-scrollbar overflow-x-auto scroll-snap-x  scroll-start-offset snap-x snap-mandatory">
+          {testimonials.map((t) => (
+            <Card
+              key={t.id}
+              className="p-5 py-9 md:py-8 bg-white rounded-md shrink-0 w-[85%] snap-start md:w-auto"
+            >
+              <div className="flex flex-col gap-5">
+                <p className="font-inter text-[12.6px] font-stretch-50% text-black/80">
+                  {t.text}
+                </p>
+                {/* <div className="text-black flex flex-col gap-2 pt-3">
+                  <h3 className="font-raleway font-[600] md:font-normal font-xs">
+                    {t.client}
+                  </h3>
+                  <span className="font-raleway text-sm">{t.company}</span>
+                </div> */}
+              </div>
+            </Card>
+          ))}
+        </div>
+      </div>
     </div>
   );
-}
+};
+
+export default Testimonials;
 
 const testimonials = [
   {
-    quote:
-      "It was the best of times, it was the worst of times, it was the age of wisdom, it was the age of foolishness, it was the epoch of belief, it was the epoch of incredulity, it was the season of Light, it was the season of Darkness, it was the spring of hope, it was the winter of despair.",
-    name: "Charles Dickens",
-    title: "A Tale of Two Cities",
+    id: 1,
+    text: `Wow...this is absolutely stunning ma'am. I love how clean and professional the design looks.
+It captures exactly what I had in mind.
+
+Thank you so much🙏
+`,
   },
   {
-    quote:
-      "To be, or not to be, that is the question: Whether 'tis nobler in the mind to suffer The slings and arrows of outrageous fortune, Or to take Arms against a Sea of troubles, And by opposing end them: to die, to sleep.",
-    name: "William Shakespeare",
-    title: "Hamlet",
+    id: 2,
+    text: `Wow...this is absolutely stunning ma'am. I love how clean and professional the design looks.
+It captures exactly what I had in mind.
+
+Thank you so much🙏
+`,
   },
   {
-    quote: "All that we see or seem is but a dream within a dream.",
-    name: "Edgar Allan Poe",
-    title: "A Dream Within a Dream",
+    id: 3,
+    text: `Wow...this is absolutely stunning ma'am. I love how clean and professional the design looks.
+It captures exactly what I had in mind.
+
+Thank you so much🙏
+`,
   },
   {
-    quote:
-      "It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife.",
-    name: "Jane Austen",
-    title: "Pride and Prejudice",
+    id: 4,
+    text: `Wow...this is absolutely stunning ma'am. I love how clean and professional the design looks.
+It captures exactly what I had in mind.
+
+Thank you so much🙏
+`,
   },
   {
-    quote:
-      "Call me Ishmael. Some years ago—never mind how long precisely—having little or no money in my purse, and nothing particular to interest me on shore, I thought I would sail about a little and see the watery part of the world.",
-    name: "Herman Melville",
-    title: "Moby-Dick",
+    id: 5,
+    text: `Wow...this is absolutely stunning ma'am. I love how clean and professional the design looks.
+It captures exactly what I had in mind.
+
+Thank you so much🙏
+`,
+  },
+  {
+    id: 6,
+    text: `Wow...this is absolutely stunning ma'am. I love how clean and professional the design looks.
+It captures exactly what I had in mind.
+
+Thank you so much🙏
+`,
   },
 ];

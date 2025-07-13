@@ -1,10 +1,13 @@
 import About from "@/components/about";
 import { Backdrop } from "@/components/backdrop";
 import Body from "@/components/body";
+import BrandStory from "@/components/brandStory";
+import CallToAction from "@/components/callToAction";
+import Footer from "@/components/footer";
 import Header from "@/components/header";
 import Mobileheader from "@/components/mobile-header";
 import RecentWorks from "@/components/recent-works";
-import { Testimonials } from "@/components/testimonials";
+import Testimonials from "@/components/testimonials";
 import React from "react";
 
 const page = () => {
@@ -17,7 +20,10 @@ const page = () => {
       </div>
       <About />
       <RecentWorks />
-      {/* <Testimonials /> */}
+      <Testimonials />
+      <BrandStory />
+      <CallToAction />
+      <Footer />
     </div>
   );
 };

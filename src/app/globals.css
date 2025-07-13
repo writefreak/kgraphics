@@ -15,6 +15,11 @@
   }
 }
 
+.scroll-start-offset {
+  scroll-padding-left: 100%;
+  scroll-padding-right: 100%;
+}
+
 @import "tailwindcss";
 
 @theme inline {

@@ -22,7 +22,7 @@ const Mobileheader = () => {
             />
           </Link>
           <div className="flex items-center gap-2">
-            <div>
+            <a href={"https://wa.me/09030260393"}>
               <Button
                 onClick={handleClick}
                 className={
@@ -33,7 +33,7 @@ const Mobileheader = () => {
               >
                 Let's Connect
               </Button>
-            </div>
+            </a>
             <MobileMenu />
           </div>
         </div>
