@@ -7,19 +7,20 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "./ui/Recentcarousel";
+import Picture from "./ui/picture";
 
 export function MobileRecent() {
   return (
-    <div className="overflow-hidden">
+    <div data-aos="fade-up" className="overflow-hidden">
       {/* header here */}
       <Carousel className="mx-auto px-5 pb-10">
-        <CarouselContent>
+        <CarouselContent className="pb-4">
           {Array.from({ length: 12 }).map((_, i) => (
             <CarouselItem
               key={i + "a"}
               className="relative flex h-[500px] w-[270px] items-center justify-center "
             >
-              <img
+              <Picture
                 className="w-full h-full object-cover absolute rounded-md"
                 alt=""
                 src={images[i].img}
@@ -37,8 +38,8 @@ export function MobileRecent() {
 }
 
 const images = [
-  { id: 1, img: "/WhatsApp Image 2025-07-05 at 18.51.28_35492685.jpg" },
-  { id: 2, img: "/WhatsApp Image 2025-07-05 at 18.51.29_fc6cd04b.jpg" },
+  { id: 1, img: "/WhatsApp Image 2025-07-05 at 18.51.29_fc6cd04b.jpg" },
+  { id: 2, img: "/WhatsApp Image 2025-07-05 at 18.51.28_35492685.jpg" },
   { id: 3, img: "/WhatsApp Image 2025-07-05 at 18.51.41_152958d8.jpg" },
   { id: 4, img: "/WhatsApp Image 2025-07-05 at 18.51.29_b27e6e1c.jpg" },
   { id: 5, img: "/first-oracle.jpg" },

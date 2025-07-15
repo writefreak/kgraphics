@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "./ui/dialog";
 import { useState } from "react";
 import { Button } from "./ui/button";
 import { ChevronLast, ChevronLeft, ChevronRight } from "lucide-react";
+import Picture from "./ui/picture";
 
 const CARDS_PER_PAGE = 3;
 
@@ -57,7 +58,7 @@ export function Recent() {
         }}
       >
         {/* CARD WRAPPER */}
-        <div className="relative overflow-hidden w-full h-[450px] mb-6">
+        <div className="relative overflow-hidden w-full h-[450px] mb">
           <AnimatePresence initial={false} custom={direction}>
             <motion.div
               layout
@@ -73,10 +74,11 @@ export function Recent() {
               {currentCards.map((w, index) => (
                 <DialogTrigger asChild key={startIndex + index}>
                   <div
+                    data-aos="fade-up"
                     className="w-[300px] h-[400px] hover:card-hover-effect cursor-pointer flex-shrink-0"
                     onClick={() => setSelectedImage(w.img)}
                   >
-                    <img
+                    <Picture
                       src={w.img}
                       alt=""
                       className="w-full h-full object-cover rounded-md"

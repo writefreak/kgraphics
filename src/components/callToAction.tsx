@@ -6,6 +6,12 @@ const CallToAction = () => {
   const [isClicked, setIsClicked] = useState(false);
 
   const handleClick = () => {
+    const phone = "2349030260393";
+    const message =
+      "Hi K-Graphics, I have a project in mind and I would like to bring it to life with your help.";
+    const encoded = encodeURIComponent(message);
+    const whatsappLink = `https://wa.me/${phone}?text=${encoded}`;
+    window.open(whatsappLink, "_blank");
     setIsClicked;
   };
 
@@ -16,7 +22,7 @@ const CallToAction = () => {
           Ready to bring Your Vision <br /> To Life With Stunning Visuals?
         </h2>
 
-        <a href={"https://wa.me/09030260393"}>
+        <div>
           <Button
             onClick={handleClick}
             className={
@@ -27,7 +33,7 @@ const CallToAction = () => {
           >
             Let's Connect
           </Button>
-        </a>
+        </div>
       </div>
     </div>
   );

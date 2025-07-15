@@ -13,14 +13,15 @@ import {
   Menu,
   Star,
 } from "lucide-react";
-import Link from "next/link";
+import { Link as ScrollLink } from "react-scroll";
 import { useState } from "react";
 
 export function MobileMenu() {
   const [activeIndex, setActiveIndex] = useState<number>(0);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <Sheet>
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
         <Menu className="text-[#030142]" />
       </SheetTrigger>
@@ -31,13 +32,18 @@ export function MobileMenu() {
           </SheetTitle>
         </SheetHeader>
 
-        <Link href="#" className="px-2 py-6 flex flex-col gap-10">
+        <div className="px-2 py-6 flex flex-col gap-10">
           {links.map((l, index) => {
             const isActive = activeIndex == index;
             return (
-              <div
+              <ScrollLink
+                to={l.title}
+                smooth={true}
+                offset={0}
+                duration={2000}
                 onClick={() => {
                   setActiveIndex(index);
+                  setIsOpen(false);
                 }}
                 key={index}
                 className={
@@ -48,10 +54,10 @@ export function MobileMenu() {
               >
                 {l.icon}
                 <h3 className="text-sm text-[#030142]">{l.title}</h3>
-              </div>
+              </ScrollLink>
             );
           })}
-        </Link>
+        </div>
       </SheetContent>
     </Sheet>
   );

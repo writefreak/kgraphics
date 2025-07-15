@@ -9,7 +9,10 @@ const BrandStory = () => {
   };
   return (
     <div className="border-t border-t-black/10 border-b border-b-black/10 md:border-0">
-      <div className="md:pt-7 md:pb-16 pt-10 pb-5 flex flex-col items-center ">
+      <div
+        data-aos="fade-up"
+        className="md:pt-7 md:pb-16 pt-10 pb-5 flex flex-col items-center "
+      >
         <h2 className="md:text-3xl text-2xl font-raleway text-center font-[500]">
           Our Brand Story
         </h2>
@@ -23,7 +26,7 @@ const BrandStory = () => {
         <div className="pt-5 pb-3">
           <Button
             onClick={handleDownload}
-            className="hover:bg-[#030142] hover:text-white h-7 text-xs font-raleway hover:-translate-y-1 transition-all duration-500 border-2   bg-transparent text-[#030142] border-[#030142] rounded-full "
+            className="h-7 md:p-4 text-xs md:text-base font-raleway hover:bg-transparent hover:-translate-y-1 transition-all duration-500 text-[#030142] border-[#030142] border-2 bg-transparent rounded-full"
           >
             Download Story Here
           </Button>

@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { Card } from "./ui/card";
 import {
@@ -7,38 +8,45 @@ import {
   AccordionTrigger,
 } from "./ui/accordion";
 import { MobileAbout } from "./mobile-about";
+import { Element } from "react-scroll";
 
 const About = () => {
   return (
-    <div className="md:px-40 p-4 flex flex-col md:gap-8 md:pt-16">
-      <div className="md:py-0 py-5 border-t md:border-t-0 flex flex-col gap-3 items-center ">
-        <h2 className="md:text-3xl text-2xl font-raleway text-center font-[500]">
-          Why Choose Us?
-        </h2>
-        <p className=" text-sm md:text-base font-light w-[20rem] md:w-[34rem] text-center  font-inter">
-          We give life to your ideas through excellent designs that speak with
-          clarity and purpose. Our projects blend soul aesthetics in such a
-          harmonic manner that reflects the uniqueness of our clients.
-        </p>
+    <Element name="About">
+      <div className="md:px-40 p-4 flex flex-col md:gap-8 md:pt-16">
+        <div className="md:py-0 py-5 border-t md:border-t-0 flex flex-col gap-3 items-center ">
+          <h2 className="md:text-3xl text-2xl font-raleway text-center font-[500]">
+            Why Choose Us?
+          </h2>
+          <p className=" text-sm md:text-base font-light w-[20rem] md:w-[34rem] text-center  font-inter">
+            We give life to your ideas through excellent designs that speak with
+            clarity and purpose. Our projects blend soul aesthetics in such a
+            harmonic manner that reflects the uniqueness of our clients.
+          </p>
+        </div>
+        <div className="md:grid hidden md:grid-cols-2 gap-3">
+          {about.map((a, index) => (
+            <Card
+              data-aos="zoom-in"
+              key={index}
+              className="p-4 md:p-7 bg-[#030142] rounded-md"
+            >
+              <div className="flex flex-col gap-2 items-center md:items-start">
+                <h3 className="text-xl font-raleway font-[500] md:text-left text-white">
+                  {a.title}
+                </h3>
+                <p className="text-[13.5px] font-inter font-light text-center md:text-left text-white/80">
+                  {a.desc}
+                </p>
+              </div>
+            </Card>
+          ))}
+        </div>
+        <div className="">
+          <MobileAbout className="md:hidden" />
+        </div>
       </div>
-      <div className="md:grid hidden md:grid-cols-2 gap-3">
-        {about.map((a, index) => (
-          <Card key={index} className="p-4 md:p-7 bg-[#030142] rounded-md">
-            <div className="flex flex-col gap-2 items-center md:items-start">
-              <h3 className="text-xl font-raleway font-[500] md:text-left text-white">
-                {a.title}
-              </h3>
-              <p className="text-[13.5px] font-inter font-light text-center md:text-left text-white/80">
-                {a.desc}
-              </p>
-            </div>
-          </Card>
-        ))}
-      </div>
-      <div className="">
-        <MobileAbout className="md:hidden" />
-      </div>
-    </div>
+    </Element>
   );
 };
 

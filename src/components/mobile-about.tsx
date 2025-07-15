@@ -15,6 +15,7 @@ export function MobileAbout({ className }: Props) {
     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
       {about.map((a, index) => (
         <Accordion
+          data-aos="zoom-in-down"
           key={index}
           type="single"
           collapsible
