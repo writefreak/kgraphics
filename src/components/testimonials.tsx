@@ -23,16 +23,17 @@ const Testimonials = () => {
                 key={t.id}
                 className="p-5 py-9 md:py-8 bg-white rounded-md shrink-0 w-[85%] snap-start md:w-auto"
               >
-                <div className="flex flex-col gap-5">
-                  <p className="font-inter text-[12.6px] font-stretch-50% text-black/80">
+                <div className="flex flex-col h-full justify-between">
+                  <p className="font-inter text-[12.6px] text-black/80">
                     {t.text}
                   </p>
-                  {/* <div className="text-black flex flex-col gap-2 pt-3">
-                  <h3 className="font-raleway font-[600] md:font-normal font-xs">
-                    {t.client}
-                  </h3>
-                  <span className="font-raleway text-sm">{t.company}</span>
-                </div> */}
+
+                  <div className="text-black flex flex-col gap-2 pt-5 md:pt-7">
+                    <h3 className="font-raleway font-[600] text-base">
+                      {t.client}
+                    </h3>
+                    <span className="font-raleway text-xs">{t.company}</span>
+                  </div>
                 </div>
               </Card>
             ))}
@@ -48,50 +49,50 @@ export default Testimonials;
 const testimonials = [
   {
     id: 1,
-    text: `Wow...this is absolutely stunning ma'am. I love how clean and professional the design looks.
-It captures exactly what I had in mind.
+    text: `Working with K-Graphics was a game-changer for my brand. The designs were vibrant, classy and perfectly aligned with my brand colors. I’ll definitely be coming back for more!
 
-Thank you so much🙏
 `,
+    client: "Peace Couture",
+    company: "Fashion Brand Owner – Ghana",
   },
   {
     id: 2,
-    text: `Wow...this is absolutely stunning ma'am. I love how clean and professional the design looks.
-It captures exactly what I had in mind.
-
-Thank you so much🙏
+    text: `The flyer design for my event exceeded expectations! K-Graphics captured the theme so well and delivered right on time. Highly recommended!
 `,
+    client: "Chidera M.",
+    company: "Event Planner – Abuja",
   },
   {
     id: 3,
-    text: `Wow...this is absolutely stunning ma'am. I love how clean and professional the design looks.
-It captures exactly what I had in mind.
-
-Thank you so much🙏
+    text: `I’ve worked with several designers, but K-Graphics stands out. Attention to detail, 
+    creativity and professionalism — all 10/10.
 `,
+    client: "Adewale Johnson",
+    company: "Entrepreneur – Lagos",
   },
   {
     id: 4,
-    text: `Wow...this is absolutely stunning ma'am. I love how clean and professional the design looks.
-It captures exactly what I had in mind.
-
-Thank you so much🙏
+    text: `I love how K-Graphics understood my vision and turned it into a beautiful Instagram design 
+    that matches my faith-based message. God bless you!
 `,
+    client: " Blessing Ibeh",
+    company: "Christian Blogger – Port Harcourt",
   },
   {
     id: 5,
-    text: `Wow...this is absolutely stunning ma'am. I love how clean and professional the design looks.
-It captures exactly what I had in mind.
-
-Thank you so much🙏
+    text: `K-Graphics helped us design promotional materials for our student week 
+    and the response was massive! 
+    Everyone kept asking who our designer was!
 `,
+    client: "Nifemi S.",
+    company: "Student Union PRO – Ondo",
   },
   {
     id: 6,
-    text: `Wow...this is absolutely stunning ma'am. I love how clean and professional the design looks.
-It captures exactly what I had in mind.
-
-Thank you so much🙏
+    text: ` We needed a modern, minimalist look and K-Graphics delivered perfectly. 
+    Fast response, clean design, and great communication!
 `,
+    client: "Ifeanyi Chuks",
+    company: "Tech Startup Founder",
   },
 ];

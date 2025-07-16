@@ -128,8 +128,8 @@ export function Recent() {
 }
 
 const works = [
-  { img: "/WhatsApp Image 2025-07-05 at 18.51.28_35492685.jpg" },
   { img: "/WhatsApp Image 2025-07-05 at 18.51.29_fc6cd04b.jpg" },
+  { img: "/WhatsApp Image 2025-07-05 at 18.51.28_35492685.jpg" },
   { img: "/WhatsApp Image 2025-07-05 at 18.51.41_152958d8.jpg" },
   { img: "/WhatsApp Image 2025-07-05 at 18.51.29_b27e6e1c.jpg" },
   { img: "/first-oracle.jpg" },

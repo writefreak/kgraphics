@@ -40,7 +40,7 @@ const Header = () => {
         className={`flex bg-white/80 backdrop-blur-md shadow-md md:w-[800px] p-1 px-2 rounded-full items-center justify-between 
       ${isVisible ? "opacity-100" : "opacity-0 pointer-events-none"}`}
       >
-        <Link href="#" className="h-12 w-12  pb-1">
+        <Link href="/" className="h-12 w-12  pb-1">
           <img
             src="/kemilogo.png"
             alt=""
