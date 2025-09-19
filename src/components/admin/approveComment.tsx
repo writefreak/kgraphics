@@ -1,13 +1,81 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import { Card } from "../ui/card";
 import { Button } from "../ui/button";
 
 const ApproveComment = () => {
+  const [reviews, setReviews] = useState<any[]>([]);
+  const [approvingIds, setApprovingIds] = useState<string[]>([]);
+  const [deletingIds, setDeletingIds] = useState<string[]>([]);
+
+  // fetch reviews from your API on mount
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const res = await fetch("/api/seeReviews");
+        if (res.ok) {
+          const data = await res.json();
+          setReviews(data);
+        } else {
+          console.error("Failed to load reviews");
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchReviews();
+  }, []);
+
+  // approve a review
+  const handleApprove = async (id: string) => {
+    setApprovingIds((prev) => [...prev, id]);
+    try {
+      const res = await fetch("/api/reviewStatus", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+      if (res.ok) {
+        setReviews((prev) =>
+          prev.map((r) => (r.id === id ? { ...r, status: "approved" } : r))
+        );
+      } else {
+        console.error("Failed to approve");
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setApprovingIds((prev) => prev.filter((lid) => lid !== id));
+    }
+  };
+
+  // delete a review
+  const handleDelete = async (id: string) => {
+    setDeletingIds((prev) => [...prev, id]);
+    try {
+      const res = await fetch("/api/reviewStatus", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+      if (res.ok) {
+        setReviews((prev) => prev.filter((r) => r.id !== id));
+      } else {
+        console.error("Failed to delete");
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setDeletingIds((prev) => prev.filter((lid) => lid !== id));
+    }
+  };
+
   return (
     <div>
-      <div className=" md:px-0">
-        <div className="flex md:grid md:grid-cols-3 gap-4 no-scrollbar overflow-x-auto scroll-snap-x  scroll-start-offset snap-x snap-mandatory">
-          {testimonials.map((t) => (
+      <div className="md:px-0">
+        <div className="flex md:grid md:grid-cols-3 gap-4 no-scrollbar overflow-x-auto scroll-snap-x scroll-start-offset snap-x snap-mandatory">
+          {reviews.map((t) => (
             <Card
               data-aos="zoom-in"
               key={t.id}
@@ -15,22 +83,38 @@ const ApproveComment = () => {
             >
               <div className="flex flex-col h-full justify-between">
                 <p className="font-inter text-[12.6px] text-black/80">
-                  {t.text}
+                  {t.reviewText}
                 </p>
 
                 <div className="text-black flex flex-col gap-2 pt-5 md:pt-5">
-                  <h3 className="font-raleway text-sm font-[600] ">
-                    {t.client}
-                  </h3>
-                  <span className="font-raleway text-xs">{t.company}</span>
+                  <h3 className="font-raleway text-sm font-[600]">{t.name}</h3>
+                  <span className="font-raleway text-xs">{t.businessName}</span>
                 </div>
               </div>
-              <div className="self-end flex  gap-3 md:pt-4">
-                <Button className="bg-[#030712] h-8">
-                  <p className="text-xs md:text-sm">Approve</p>
+              <div className="self-end flex gap-3 md:pt-4">
+                <Button
+                  className="bg-[#030712] h-8"
+                  disabled={
+                    approvingIds.includes(t.id) || t.status === "approved"
+                  }
+                  onClick={() => handleApprove(t.id)}
+                >
+                  <p className="text-xs md:text-sm">
+                    {t.status === "approved"
+                      ? "Approved"
+                      : approvingIds.includes(t.id)
+                      ? "Approving..."
+                      : "Approve"}
+                  </p>
                 </Button>
-                <Button className="bg-red-700 h-8">
-                  <p className="text-xs md:text-sm">Delete</p>
+                <Button
+                  className="bg-red-700 h-8"
+                  disabled={deletingIds.includes(t.id)}
+                  onClick={() => handleDelete(t.id)}
+                >
+                  <p className="text-xs md:text-sm">
+                    {deletingIds.includes(t.id) ? "Deleting..." : "Delete"}
+                  </p>
                 </Button>
               </div>
             </Card>
@@ -42,54 +126,3 @@ const ApproveComment = () => {
 };
 
 export default ApproveComment;
-
-const testimonials = [
-  {
-    id: 1,
-    text: `Working with K-Graphics was a game-changer for my brand. The designs were vibrant, classy and perfectly aligned with my brand colors. I’ll definitely be coming back for more!
-
-`,
-    client: "Peace Couture",
-    company: "Fashion Brand Owner – Ghana",
-  },
-  {
-    id: 2,
-    text: `The flyer design for my event exceeded expectations! K-Graphics captured the theme so well and delivered right on time. Highly recommended!
-`,
-    client: "Chidera M.",
-    company: "Event Planner – Abuja",
-  },
-  {
-    id: 3,
-    text: `I’ve worked with several designers, but K-Graphics stands out. Attention to detail, 
-    creativity and professionalism — all 10/10.
-`,
-    client: "Adewale Johnson",
-    company: "Entrepreneur – Lagos",
-  },
-  {
-    id: 4,
-    text: `I love how K-Graphics understood my vision and turned it into a beautiful Instagram design 
-    that matches my faith-based message. God bless you!
-`,
-    client: " Blessing Ibeh",
-    company: "Christian Blogger – Port Harcourt",
-  },
-  {
-    id: 5,
-    text: `K-Graphics helped us design promotional materials for our student week 
-    and the response was massive! 
-    Everyone kept asking who our designer was!
-`,
-    client: "Nifemi S.",
-    company: "Student Union PRO – Ondo",
-  },
-  {
-    id: 6,
-    text: ` We needed a modern, minimalist look and K-Graphics delivered perfectly. 
-    Fast response, clean design, and great communication!
-`,
-    client: "Ifeanyi Chuks",
-    company: "Tech Startup Founder",
-  },
-];

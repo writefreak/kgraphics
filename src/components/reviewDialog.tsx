@@ -20,9 +20,11 @@ export function ReviewDialog() {
   const [businessName, setBusinessName] = useState("");
   const [reviewText, setReviewText] = useState("");
   const [loading, setLoading] = useState(false);
+  const [successMsg, setSuccessMsg] = useState(""); // 👈 new
 
   const handleSave = async () => {
     setLoading(true);
+    setSuccessMsg("");
     try {
       const res = await fetch("/api/reviews", {
         method: "POST",
@@ -31,18 +33,24 @@ export function ReviewDialog() {
       });
 
       if (res.ok) {
-        // reset fields
         setName("");
         setEmail("");
         setBusinessName("");
         setReviewText("");
-        // close dialog
-        setOpen(false);
+
+        // show success message for 2s then close dialog
+        setSuccessMsg("✅ Your review has been submitted!");
+        setTimeout(() => {
+          setSuccessMsg("");
+          setOpen(false);
+        }, 2000);
       } else {
         console.error("Failed to submit review");
+        setSuccessMsg("❌ Something went wrong. Try again.");
       }
     } catch (err) {
       console.error(err);
+      setSuccessMsg("❌ Network error. Try again.");
     } finally {
       setLoading(false);
     }
@@ -50,14 +58,12 @@ export function ReviewDialog() {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      {/* trigger button */}
       <DialogTrigger asChild>
-        <Button className="h-7 md:p-4 text-xs md:text-sm font-raleway hover:bg-[#498cff] hover:-translate-y-1 transition-all duration-500 bg-[#498cff]  text-white rounded-full">
+        <Button className="h-7 md:p-4 text-xs md:text-sm font-raleway hover:bg-[#498cff] hover:-translate-y-1 transition-all duration-500 bg-[#498cff] text-white rounded-full">
           Leave us a review
         </Button>
       </DialogTrigger>
 
-      {/* modal content */}
       <DialogContent className="sm:max-w-[425px] bg-white">
         <DialogHeader>
           <DialogTitle className="font-raleway">Write a review</DialogTitle>
@@ -103,6 +109,9 @@ export function ReviewDialog() {
               draggable="false"
             ></textarea>
           </div>
+          {successMsg && (
+            <p className="text-green-600 text-xs">{successMsg}</p> // 👈 shows feedback
+          )}
         </div>
         <DialogFooter>
           <DialogClose asChild>
