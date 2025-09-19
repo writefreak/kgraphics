@@ -11,7 +11,7 @@ const BrandStory = () => {
     <div className="border-t border-t-black/10 border-b border-b-black/10 md:border-0">
       <div
         data-aos="fade-up"
-        className="md:pt-7 md:pb-16 pt-10 pb-5 flex flex-col items-center "
+        className="md:pt-5 md:pb-16 pt-10 pb-5 flex flex-col items-center "
       >
         <h2 className="md:text-3xl text-2xl font-raleway text-center font-[500]">
           Our Brand Story

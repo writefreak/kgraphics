@@ -1,4 +1,5 @@
 import About from "@/components/about";
+import AddReview from "@/components/addReview";
 import AOSInit from "@/components/aosinit";
 import { Backdrop } from "@/components/backdrop";
 import BrandStory from "@/components/brandStory";
@@ -25,8 +26,11 @@ const page = () => {
       <About />
       <RecentWorks />
       <Testimonials />
-      <BrandStory />
-      {/* <CallToAction /> */}
+
+      <CallToAction />
+      <AddReview />
+
+      {/* <BrandStory /> */}
       <Footer />
     </div>
   );

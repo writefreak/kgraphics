@@ -15,6 +15,8 @@ import {
 } from "lucide-react";
 import { Link as ScrollLink } from "react-scroll";
 import { useState } from "react";
+import { Button } from "./ui/button";
+import Link from "next/link";
 
 export function MobileMenu() {
   const [activeIndex, setActiveIndex] = useState<number>(0);
@@ -57,6 +59,13 @@ export function MobileMenu() {
               </ScrollLink>
             );
           })}
+          <div>
+            <Link href={"/dashboard"}>
+              <Button className="bg-[#030142]">
+                <h3 className="text-sm text-white">Admin</h3>
+              </Button>
+            </Link>
+          </div>
         </div>
       </SheetContent>
     </Sheet>

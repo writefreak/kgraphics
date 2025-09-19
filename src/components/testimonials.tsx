@@ -2,6 +2,8 @@
 import React from "react";
 import { Card } from "./ui/card";
 import { Element } from "react-scroll";
+import { Button } from "./ui/button";
+import CallToAction from "./callToAction";
 
 const Testimonials = () => {
   return (
