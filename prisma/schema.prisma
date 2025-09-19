@@ -45,6 +45,7 @@ model Review {
   email      String?
   businessName String
   reviewText String
+  status String @default("pending")
   createdAt  DateTime @default(now())
 }
 
