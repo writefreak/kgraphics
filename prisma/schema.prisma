@@ -58,3 +58,10 @@ model Activity {
   userId  String?
   user    User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
+
+model Visitor {
+  id        String   @id @default(cuid())
+  ip        String
+  userAgent String
+  visitedAt DateTime @default(now())
+}
