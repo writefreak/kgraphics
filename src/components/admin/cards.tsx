@@ -1,13 +1,19 @@
 "use client";
 import React, { useEffect, useState } from "react";
 
+type VisitorDataItem = {
+  date: string;
+  count: number;
+};
+
 const Cards = () => {
   const [totalVisits, setTotalVisits] = useState(0);
+  const [totalReviews, setTotalReviews] = useState("--");
 
   useEffect(() => {
     const fetchTotalVisits = async () => {
       try {
-        const res = await fetch("/api/countVisits");
+        const res = await fetch(`/api/countVisits?t=${new Date().getTime()}`);
         if (res.ok) {
           const data = await res.json();
           setTotalVisits(data.total || 0);
@@ -18,8 +24,41 @@ const Cards = () => {
         console.error(err);
       }
     };
+
+    const fetchTotalReviews = async () => {
+      try {
+        const res = await fetch(`/api/totalReviews?t=${new Date().getTime()}`);
+        if (res.ok) {
+          const data = await res.json();
+          setTotalReviews(data.total || "--");
+        } else {
+          console.error("Failed to fetch total reviews");
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
     fetchTotalVisits();
+    fetchTotalReviews();
   }, []);
+
+  const details = [
+    { id: 1, title: "Total visits", figure: "300", action: "Users Visited" },
+    {
+      id: 2,
+      title: "Total story downloads",
+      figure: "300",
+      action: "Users downloaded",
+    },
+    { id: 3, title: "Total Reviews", figure: "300", action: "Users Reviewed" },
+    {
+      id: 4,
+      title: "Total designs",
+      figure: "300",
+      action: "Designs completed",
+    },
+  ];
 
   return (
     <div className="flex flex-col gap-5">
@@ -30,7 +69,11 @@ const Cards = () => {
               <p className="text-sm">{d.title}</p>
               <div className="flex flex-col gap-2">
                 <h2 className="text-2xl font-medium">
-                  {d.id === 1 ? totalVisits : d.figure}
+                  {d.id === 1
+                    ? totalVisits
+                    : d.id === 3
+                    ? totalReviews
+                    : d.figure}
                 </h2>
                 <p className="text-neutral-600 text-sm">{d.action}</p>
               </div>
@@ -43,15 +86,3 @@ const Cards = () => {
 };
 
 export default Cards;
-
-const details = [
-  { id: 1, title: "Total visits", figure: "300", action: "Users Visited" },
-  {
-    id: 2,
-    title: "Total story downloads",
-    figure: "300",
-    action: "Users downloaded",
-  },
-  { id: 3, title: "Total Reviews", figure: "300", action: "Users Reviewed" },
-  { id: 4, title: "Total designs", figure: "300", action: "Designs completed" },
-];
