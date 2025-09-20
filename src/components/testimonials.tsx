@@ -12,6 +12,7 @@ interface Review {
 
 const Testimonials = () => {
   const [reviews, setReviews] = useState<Review[]>([]);
+  const [loading, setLoading] = useState(true); // <-- loading state
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -25,6 +26,8 @@ const Testimonials = () => {
         }
       } catch (err) {
         console.error("Error fetching reviews:", err);
+      } finally {
+        setLoading(false); // <-- stop loading
       }
     };
     fetchReviews();
@@ -42,30 +45,38 @@ const Testimonials = () => {
           </p>
         </div>
         <div className="px-4 md:px-0">
-          <div className="flex md:grid md:grid-cols-3 md:px-40 gap-4 no-scrollbar overflow-x-auto scroll-snap-x scroll-start-offset snap-x snap-mandatory">
-            {reviews.map((t) => (
-              <Card
-                data-aos="zoom-in"
-                key={t.id}
-                className="p-5 py-9 md:py-8 bg-white rounded-md shrink-0 w-[85%] snap-start md:w-auto"
-              >
-                <div className="flex flex-col h-full justify-between">
-                  <p className="font-inter text-[12.6px] text-black/80">
-                    {t.reviewText}
-                  </p>
+          {loading ? (
+            <div className="flex justify-center py-10">
+              <div className="animate-spin rounded-full h-10 w-10  border-2 border-[#030421]"></div>
+            </div>
+          ) : reviews.length === 0 ? (
+            <p className="text-center text-gray-500 py-10">No reviews yet.</p>
+          ) : (
+            <div className="flex md:grid md:grid-cols-3 md:px-40 gap-4 no-scrollbar overflow-x-auto scroll-snap-x scroll-start-offset snap-x snap-mandatory">
+              {reviews.map((t) => (
+                <Card
+                  data-aos="zoom-in"
+                  key={t.id}
+                  className="p-5 py-9 md:py-8 bg-white rounded-md shrink-0 w-[85%] snap-start md:w-auto"
+                >
+                  <div className="flex flex-col h-full justify-between">
+                    <p className="font-inter text-[12.6px] text-black/80">
+                      {t.reviewText}
+                    </p>
 
-                  <div className="text-black flex flex-col gap-2 pt-5 md:pt-7">
-                    <h3 className="font-raleway font-[600] text-base">
-                      {t.name}
-                    </h3>
-                    <span className="font-raleway text-xs">
-                      {t.businessName}
-                    </span>
+                    <div className="text-black flex flex-col gap-2 pt-5 md:pt-7">
+                      <h3 className="font-raleway font-[600] text-base">
+                        {t.name}
+                      </h3>
+                      <span className="font-raleway text-xs">
+                        {t.businessName}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </Card>
-            ))}
-          </div>
+                </Card>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </Element>
