@@ -1,178 +1,196 @@
 "use client";
+
 import * as React from "react";
+import { TrendingUp } from "lucide-react";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 
 import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
-  ChartLegend,
-  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-export const description = "An interactive area chart";
+export const description = "An area chart with gradient fill";
 
-// Define the type for your chart data
+// Define the type for your chart data from the API
 type ChartDataItem = {
   date: string;
-  count: number;
+  desktop: number;
+  mobile: number;
 };
 
 const chartConfig = {
-  visitors: {
-    label: "Total Visitors",
-    color: "hsl(var(--chart-1))",
+  desktop: {
+    label: "Desktop",
+    color: "var(--chart-1)",
+  },
+  mobile: {
+    label: "Mobile",
+    color: "var(--chart-2)",
   },
 } satisfies ChartConfig;
 
 export function MyChart() {
   const [chartData, setChartData] = React.useState<ChartDataItem[]>([]);
-  const [timeRange, setTimeRange] = React.useState("90d");
+  const [filteredData, setFilteredData] = React.useState<ChartDataItem[]>([]);
+  const [timeRange, setTimeRange] = React.useState<"7d" | "1m" | "90d">("90d");
 
+  // Fetch chart data from the API
   React.useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch(
-          `/api/countVisits?t=${new Date().getTime()}`
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        const data: ChartDataItem[] = await response.json();
+        const res = await fetch(`/api/countVisits?t=${new Date().getTime()}`);
+        if (!res.ok) throw new Error("Failed to fetch chart data");
+        const data: ChartDataItem[] = await res.json();
         setChartData(data);
-      } catch (error) {
-        console.error("Error fetching chart data:", error);
+      } catch (err) {
+        console.error("Error fetching chart data:", err);
       }
     }
-
     fetchData();
   }, []);
 
-  const filteredData = chartData.filter((item) => {
-    const date = new Date(item.date);
-    const referenceDate = new Date();
+  // Filter chart data based on time range
+  React.useEffect(() => {
+    if (!chartData.length) return;
+
+    const today = new Date();
     let daysToSubtract = 90;
-    if (timeRange === "30d") {
-      daysToSubtract = 30;
-    } else if (timeRange === "7d") {
-      daysToSubtract = 7;
-    }
-    const startDate = new Date(referenceDate);
-    startDate.setDate(startDate.getDate() - daysToSubtract);
-    return date >= startDate;
-  });
+
+    if (timeRange === "7d") daysToSubtract = 7;
+    else if (timeRange === "1m") daysToSubtract = 30;
+
+    const startDate = new Date(today);
+    startDate.setDate(today.getDate() - daysToSubtract);
+
+    const filtered = chartData.filter(
+      (item) => new Date(item.date) >= startDate
+    );
+    setFilteredData(filtered);
+  }, [timeRange, chartData]);
 
   return (
-    <Card className="pt-0">
-      <CardHeader className="flex items-center justify-between gap-2 space-y-0 border-b py-5 sm:flex-row">
-        <div className="flex flex-col gap-3">
-          <div className="grid flex-1 gap-1">
-            <CardTitle>Website Visitors Over Time</CardTitle>
-            <CardDescription>
-              Showing analytics of total visitors on your Website
-            </CardDescription>
-          </div>
-          <div className="flex space-x-2 pt-6">
-            <button
-              onClick={() => setTimeRange("7d")}
-              className={`px-4 py-2 rounded-md transition-colors ${
-                timeRange === "7d"
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-200 text-gray-800"
-              }`}
-            >
-              7 Days
-            </button>
-            <button
-              onClick={() => setTimeRange("30d")}
-              className={`px-4 py-2 rounded-md transition-colors ${
-                timeRange === "30d"
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-200 text-gray-800"
-              }`}
-            >
-              30 Days
-            </button>
-            <button
-              onClick={() => setTimeRange("90d")}
-              className={`px-4 py-2 rounded-md transition-colors ${
-                timeRange === "90d"
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-200 text-gray-800"
-              }`}
-            >
-              90 Days
-            </button>
-          </div>
+    <Card>
+      <CardHeader>
+        <CardTitle>Area Chart - Gradient</CardTitle>
+        <CardDescription>
+          Showing total visitors for the selected time range
+        </CardDescription>
+        <div className="flex space-x-2 pt-2">
+          <button
+            onClick={() => setTimeRange("7d")}
+            className={`px-3 py-1 rounded-md ${
+              timeRange === "7d"
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200 text-gray-800"
+            }`}
+          >
+            7 Days
+          </button>
+          <button
+            onClick={() => setTimeRange("1m")}
+            className={`px-3 py-1 rounded-md ${
+              timeRange === "1m"
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200 text-gray-800"
+            }`}
+          >
+            1 Month
+          </button>
+          <button
+            onClick={() => setTimeRange("90d")}
+            className={`px-3 py-1 rounded-md ${
+              timeRange === "90d"
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200 text-gray-800"
+            }`}
+          >
+            90 Days
+          </button>
         </div>
       </CardHeader>
-      <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
-        <ChartContainer
-          config={chartConfig}
-          className="aspect-auto h-[250px] w-full"
-        >
-          <AreaChart data={filteredData}>
-            <defs>
-              <linearGradient id="fillVisitors" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="5%"
-                  stopColor="var(--color-visitors)"
-                  stopOpacity={0.8}
-                />
-                <stop
-                  offset="95%"
-                  stopColor="var(--color-visitors)"
-                  stopOpacity={0.1}
-                />
-              </linearGradient>
-            </defs>
+      <CardContent>
+        <ChartContainer config={chartConfig}>
+          <AreaChart
+            accessibilityLayer
+            data={filteredData}
+            margin={{ left: 12, right: 12 }}
+          >
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="date"
               tickLine={false}
               axisLine={false}
               tickMargin={8}
-              minTickGap={32}
-              tickFormatter={(value) => {
-                const date = new Date(value);
-                return date.toLocaleDateString("en-US", {
+              tickFormatter={(value) =>
+                new Date(value).toLocaleDateString("en-US", {
                   month: "short",
                   day: "numeric",
-                });
-              }}
-            />
-            <ChartTooltip
-              cursor={false}
-              content={
-                <ChartTooltipContent
-                  labelFormatter={(value) => {
-                    return new Date(value).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                    });
-                  }}
-                  indicator="dot"
-                />
+                })
               }
             />
+            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+            <defs>
+              <linearGradient id="fillDesktop" x1="0" y1="0" x2="0" y2="1">
+                <stop
+                  offset="5%"
+                  stopColor="var(--color-desktop)"
+                  stopOpacity={0.8}
+                />
+                <stop
+                  offset="95%"
+                  stopColor="var(--color-desktop)"
+                  stopOpacity={0.1}
+                />
+              </linearGradient>
+              <linearGradient id="fillMobile" x1="0" y1="0" x2="0" y2="1">
+                <stop
+                  offset="5%"
+                  stopColor="var(--color-mobile)"
+                  stopOpacity={0.8}
+                />
+                <stop
+                  offset="95%"
+                  stopColor="var(--color-mobile)"
+                  stopOpacity={0.1}
+                />
+              </linearGradient>
+            </defs>
             <Area
-              dataKey="count"
+              dataKey="mobile"
               type="natural"
-              fill="url(#fillVisitors)"
-              stroke="var(--color-visitors)"
+              fill="url(#fillMobile)"
+              stroke="var(--color-mobile)"
+              stackId="a"
             />
-            <ChartLegend content={<ChartLegendContent />} />
+            <Area
+              dataKey="desktop"
+              type="natural"
+              fill="url(#fillDesktop)"
+              stroke="var(--color-desktop)"
+              stackId="a"
+            />
           </AreaChart>
         </ChartContainer>
       </CardContent>
+      <CardFooter>
+        <div className="flex w-full items-start gap-2 text-sm">
+          <div className="grid gap-2">
+            <div className="flex items-center gap-2 leading-none font-medium">
+              Trending up <TrendingUp className="h-4 w-4" />
+            </div>
+          </div>
+        </div>
+      </CardFooter>
     </Card>
   );
 }

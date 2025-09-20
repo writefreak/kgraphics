@@ -43,30 +43,11 @@ export async function POST(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
   try {
-    const allVisitors = await prisma.visitor.findMany({
-      select: {
-        visitedAt: true,
-      },
-    });
+    // Count all visitors in the database
+    const totalVisitors = await prisma.visitor.count();
 
-    const aggregatedData: { [key: string]: number } = {};
-
-    allVisitors.forEach((visitor) => {
-      // Get the date in YYYY-MM-DD format
-      const date = visitor.visitedAt.toISOString().split("T")[0];
-
-      if (!aggregatedData[date]) {
-        aggregatedData[date] = 0;
-      }
-      aggregatedData[date]++;
-    });
-
-    const formattedData = Object.keys(aggregatedData).map((date) => ({
-      date,
-      count: aggregatedData[date],
-    }));
-
-    return NextResponse.json(formattedData, { status: 200 });
+    // Return a JSON object with the total count
+    return NextResponse.json({ total: totalVisitors }, { status: 200 });
   } catch (err) {
     console.error("Error counting visitors:", err);
     return NextResponse.json(

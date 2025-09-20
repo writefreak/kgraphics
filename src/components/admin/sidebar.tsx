@@ -10,7 +10,7 @@ const Sidebar = ({ className }: Props) => {
   return (
     <div
       className={cn(
-        "fixed z-50 h-screen p-5 space-y-4 text-white bg-[#030712] shadow-2xl ",
+        "fixed z-50 h-screen p-8 space-y-4 text-white bg-[#030142] shadow-2xl ",
         className
       )}
     >

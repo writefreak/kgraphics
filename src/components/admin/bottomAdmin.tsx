@@ -4,8 +4,7 @@ import Activity from "./activity";
 
 const BottomAdmin = () => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-      <MyChart />
+    <div className="">
       <Activity />
     </div>
   );

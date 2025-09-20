@@ -65,3 +65,9 @@ model Visitor {
   userAgent String
   visitedAt DateTime @default(now())
 }
+
+model Download {
+  id        Int      @id @default(autoincrement())
+  type      String   // e.g., "brandStory", in case you track multiple files
+  createdAt DateTime @default(now())
+}

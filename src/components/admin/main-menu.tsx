@@ -1,50 +1,40 @@
-import {
-  BellDot,
-  BellRing,
-  BriefcaseBusiness,
-  Dot,
-  HandCoins,
-  LayoutDashboard,
-  LogOut,
-  Newspaper,
-  User,
-} from "lucide-react";
+"use client";
+import { LayoutDashboard, User, Newspaper, LogOut } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 
 const MainMenu = () => {
-  return (
-    <div className="space-y-5 text-sm">
-      <p className="text-sm hidden md:block">Main Menu</p>
-      <Link
-        href={"/dashboard"}
-        className="flex text-white gap-2 items-center bg-white/10 p-1.5 rounded-md"
-      >
-        <LayoutDashboard width={18} />
-        <p className="text-sm">Dashboard</p>
-      </Link>
-      <Link
-        href={"/userReviews"}
-        className="flex items-center rounded-md p-1.5 gap-4 hover:bg-white/10 "
-      >
-        <User className="text-white" width={18} />
-        <p>User Reviews</p>
-      </Link>
-      <Link
-        href={"/designs"}
-        className="flex items-center rounded-md p-1.5 gap-4 hover:bg-white/10 "
-      >
-        <Newspaper className="text-white" width={18} />
-        <p>Designs</p>
-      </Link>
+  const [active, setActive] = useState("/dashboard"); // default active link
 
-      <Link
-        href={"/login"}
-        className="flex items-center rounded-md p-1.5 gap-4 hover:bg-white/10 "
-      >
-        <LogOut className="text-white " width={18} />
-        <p>Logout</p>
-      </Link>
+  const menuItems = [
+    {
+      href: "/dashboard",
+      icon: <LayoutDashboard width={18} />,
+      label: "Dashboard",
+    },
+    { href: "/userReviews", icon: <User width={18} />, label: "User Reviews" },
+    { href: "/designs", icon: <Newspaper width={18} />, label: "Designs" },
+    { href: "/login", icon: <LogOut width={18} />, label: "Logout" },
+  ];
+
+  return (
+    <div className="space-y-10 text-sm">
+      <p className="text-sm hidden md:block">Main Menu</p>
+      {menuItems.map((item) => (
+        <Link
+          key={item.href}
+          href={item.href}
+          onClick={() => setActive(item.href)}
+          className={`flex items-center gap-2 p-1.5 rounded-md ${
+            active === item.href
+              ? "bg-white/10 text-white"
+              : "hover:bg-white/10 text-white/80"
+          }`}
+        >
+          {item.icon}
+          <p className="text-sm">{item.label}</p>
+        </Link>
+      ))}
     </div>
   );
 };

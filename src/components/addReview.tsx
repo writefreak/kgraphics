@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "./ui/button";
 
-const AddReview = () => {
+const BrandStory = () => {
   return (
     <div>
       <div>
@@ -32,4 +32,4 @@ const AddReview = () => {
   );
 };
 
-export default AddReview;
+export default BrandStory;

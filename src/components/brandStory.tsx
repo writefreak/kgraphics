@@ -4,9 +4,23 @@ import { Button } from "./ui/button";
 import { saveAs } from "file-saver";
 
 const BrandStory = () => {
-  const handleDownload = () => {
+  const handleDownload = async () => {
+    // Trigger file download
     saveAs("/K-Graphics Brand Story .pdf", "Our-Brand-Story.pdf");
+
+    // Log the download to your backend
+    try {
+      await fetch("/api/logDownload", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type: "brandstory" }), // pass type for tracking
+      });
+      console.log("shown");
+    } catch (err) {
+      console.error("Failed to log download:", err);
+    }
   };
+
   return (
     <div className="border-t border-t-black/10 border-b border-b-black/10 md:border-0">
       <div

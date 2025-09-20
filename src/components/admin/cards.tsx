@@ -7,8 +7,9 @@ type VisitorDataItem = {
 };
 
 const Cards = () => {
-  const [totalVisits, setTotalVisits] = useState(0);
+  const [totalVisits, setTotalVisits] = useState("--");
   const [totalReviews, setTotalReviews] = useState("--");
+  const [totalDownloads, setTotalDownloads] = useState("--"); // <-- added
 
   useEffect(() => {
     const fetchTotalVisits = async () => {
@@ -39,8 +40,23 @@ const Cards = () => {
       }
     };
 
+    const fetchTotalDownloads = async () => {
+      try {
+        const res = await fetch(`/api/logDownload?t=${new Date().getTime()}`); // <-- your API
+        if (res.ok) {
+          const data = await res.json();
+          setTotalDownloads(data.total || "--");
+        } else {
+          console.error("Failed to fetch total downloads");
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
     fetchTotalVisits();
     fetchTotalReviews();
+    fetchTotalDownloads(); // <-- call it
   }, []);
 
   const details = [
@@ -64,18 +80,20 @@ const Cards = () => {
     <div className="flex flex-col gap-5">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
         {details.map((d) => (
-          <div key={d.id} className="bg-white rounded-xl p-4 shadow-sm">
+          <div key={d.id} className="bg-[#030142] rounded-xl p-4 shadow-sm">
             <div className="flex flex-col gap-3">
-              <p className="text-sm">{d.title}</p>
-              <div className="flex flex-col gap-2">
-                <h2 className="text-2xl font-medium">
+              <p className="text-sm text-white/80">{d.title}</p>
+              <div className="flex flex-col gap-2 text-white">
+                <h2 className="text-2xl font-medium ">
                   {d.id === 1
                     ? totalVisits
+                    : d.id === 2
+                    ? totalDownloads // <-- use totalDownloads here
                     : d.id === 3
                     ? totalReviews
                     : d.figure}
                 </h2>
-                <p className="text-neutral-600 text-sm">{d.action}</p>
+                <p className=" text-sm text-white/80">{d.action}</p>
               </div>
             </div>
           </div>

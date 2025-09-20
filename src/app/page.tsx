@@ -28,7 +28,7 @@ const page = () => {
       <Testimonials />
 
       <CallToAction />
-      <AddReview />
+      <BrandStory />
 
       {/* <BrandStory /> */}
       <Footer />

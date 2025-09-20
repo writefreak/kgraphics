@@ -16,6 +16,12 @@ export async function PUT(req: NextRequest) {
       data: { status: "approved" },
     });
 
+    await prisma.activity.create({
+      data: {
+        activityType: "approval",
+        description: "Approved a review",
+      },
+    });
     return NextResponse.json(approvedReview); // 200 OK by default
   } catch (err) {
     console.error(err);
@@ -35,6 +41,13 @@ export async function DELETE(req: NextRequest) {
     }
 
     await prisma.review.delete({ where: { id } });
+
+    await prisma.activity.create({
+      data: {
+        activityType: "delete",
+        description: "Deleted a review",
+      },
+    });
 
     return NextResponse.json(null, { status: 204 }); // No content
   } catch (err) {

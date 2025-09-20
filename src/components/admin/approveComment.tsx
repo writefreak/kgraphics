@@ -73,7 +73,7 @@ const ApproveComment = () => {
 
   return (
     <div>
-      <div className="md:px-0">
+      <div className="md:px-0 md:pt-0 pt-10">
         <div className="flex md:grid md:grid-cols-3 gap-4 no-scrollbar overflow-x-auto scroll-snap-x scroll-start-offset snap-x snap-mandatory">
           {reviews.map((t) => (
             <Card
