@@ -1,7 +1,12 @@
+import AddDesign from "@/components/admin/addDesign";
 import React from "react";
 
 const page = () => {
-  return <div>hello</div>;
+  return (
+    <div>
+      <AddDesign />
+    </div>
+  );
 };
 
 export default page;

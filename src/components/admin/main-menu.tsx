@@ -32,7 +32,7 @@ const MainMenu = () => {
           }`}
         >
           {item.icon}
-          <p className="text-sm">{item.label}</p>
+          <p className="text-sm font-inter">{item.label}</p>
         </Link>
       ))}
     </div>
