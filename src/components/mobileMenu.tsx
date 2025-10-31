@@ -12,6 +12,7 @@ import {
   House,
   Menu,
   Star,
+  User,
 } from "lucide-react";
 import { Link as ScrollLink } from "react-scroll";
 import { useState } from "react";
@@ -61,8 +62,8 @@ export function MobileMenu() {
           })}
           <div>
             <Link href={"/dashboard"}>
-              <Button className="bg-[#030142]">
-                <h3 className="text-sm text-white">Admin</h3>
+              <Button className="bg-[#030142] w-full">
+                <h3 className="text-sm text-white">Login</h3>
               </Button>
             </Link>
           </div>
