@@ -11,6 +11,7 @@ const RecentDesign: React.FC = () => {
   const [designs, setDesigns] = useState<Design[]>([]);
   const [activeDesign, setActiveDesign] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState<string | null>(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -21,8 +22,11 @@ const RecentDesign: React.FC = () => {
         if (!res.ok) throw new Error("Failed to fetch designs");
         const data = await res.json();
 
-        if (isMounted && Array.isArray(data)) {
-          setDesigns(data);
+        // Handle both wrapped and direct array responses
+        const designsArray = Array.isArray(data) ? data : data.design || [];
+
+        if (isMounted) {
+          setDesigns(designsArray);
         }
       } catch (error) {
         console.error("Failed to load designs:", error);
@@ -44,11 +48,36 @@ const RecentDesign: React.FC = () => {
     }
   };
 
+  const handleFeature = async (id: string) => {
+    try {
+      setMessage(null);
+      const res = await fetch("/api/featureDesign", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to feature design");
+
+      setMessage("Design featured successfully.");
+    } catch (error) {
+      console.error("Feature design error:", error);
+      setMessage("Error featuring design.");
+    } finally {
+      setTimeout(() => setMessage(null), 3000);
+    }
+  };
+
   return (
     <div className="w-full">
       <h2 className="text-xl font-raleway text-gray-800 mb-6">
         Recent Designs
       </h2>
+
+      {message && (
+        <p className="text-sm text-center text-gray-600 mb-3">{message}</p>
+      )}
 
       {loading ? (
         <p className="text-gray-500 text-sm">Loading designs...</p>
@@ -77,7 +106,13 @@ const RecentDesign: React.FC = () => {
                 {activeDesign === design.id ? (
                   <div className="absolute inset-0 bg-white flex flex-col justify-center items-center">
                     <div className="flex flex-row gap-3">
-                      <button className="px-4 py-2 bg-[#030142] text-white rounded-md text-sm font-medium hover:bg-blue-900 transition">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleFeature(design.id);
+                        }}
+                        className="px-4 py-2 bg-[#030142] text-white rounded-md text-sm font-medium hover:bg-blue-900 transition"
+                      >
                         Feature
                       </button>
                       <button className="px-4 py-2 bg-red-900 text-white rounded-md text-sm font-medium hover:bg-red-700 transition">

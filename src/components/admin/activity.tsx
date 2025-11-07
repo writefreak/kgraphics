@@ -25,7 +25,7 @@ const Activity = () => {
   }, []);
 
   return (
-    <div className="flex flex-col gap-3  rounded-xl p-4 ">
+    <div className="flex flex-col gap-3  rounded-xl  ">
       <h3 className="text-sm font-medium text-neutral-600">
         Recent Activities
       </h3>

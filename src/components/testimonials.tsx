@@ -12,7 +12,8 @@ interface Review {
 
 const Testimonials = () => {
   const [reviews, setReviews] = useState<Review[]>([]);
-  const [loading, setLoading] = useState(true); // <-- loading state
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false); // <-- added
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -25,13 +26,15 @@ const Testimonials = () => {
           if (process.env.NODE_ENV === "development") {
             console.error("Failed to fetch approved reviews");
           }
+          setError(true); // <-- added
         }
       } catch (err) {
         if (process.env.NODE_ENV === "development") {
           console.error("Error fetching reviews:", err);
         }
+        setError(true); // <-- added
       } finally {
-        setLoading(false); // <-- stop loading
+        setLoading(false);
       }
     };
     fetchReviews();
@@ -51,7 +54,19 @@ const Testimonials = () => {
         <div className="px-4 md:px-0">
           {loading ? (
             <div className="flex justify-center py-10">
-              <div className="animate-spin rounded-full h-10 w-10  border-2 border-[#030421]"></div>
+              <div className="animate-spin rounded-full h-10 w-10 border-2 border-[#030421]"></div>
+            </div>
+          ) : error ? (
+            <div className="text-center py-10">
+              <p className="text-gray-500 text-sm mb-4">
+                Network error — unable to load reviews.
+              </p>
+              <button
+                onClick={() => window.location.reload()}
+                className="px-4 py-2 bg-[#030142] text-white rounded-md text-sm"
+              >
+                Try Again
+              </button>
             </div>
           ) : reviews.length === 0 ? (
             <p className="text-center text-gray-500 py-10">
