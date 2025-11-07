@@ -24,7 +24,6 @@ model User {
   role      String   @default("admin")
   createdAt DateTime @default(now())
 
-  designs    Design[]
   activities Activity[]
 }
 
@@ -34,9 +33,8 @@ model Design {
   description String
   imageUrl    String
   createdAt   DateTime @default(now())
+  featured  Boolean  @default(false)
 
-  uploadedBy  String
-  user        User     @relation(fields: [uploadedBy], references: [id], onDelete: Cascade)
 }
 
 model Review {

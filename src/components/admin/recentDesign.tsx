@@ -1,47 +1,46 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 interface Design {
-  id: number;
-  name: string;
+  id: string;
+  title: string;
   imageUrl: string;
 }
 
 const RecentDesign: React.FC = () => {
-  const [designs] = useState<Design[]>([
-    {
-      id: 1,
-      name: "Galaxy Tee",
-      imageUrl: "/Catering.jpg",
-    },
-    {
-      id: 2,
-      name: "Evoluxn Hoodie",
-      imageUrl: "/Eatrite.jpg",
-    },
-    {
-      id: 3,
-      name: "Abstract Sock",
-      imageUrl: "/WhatsApp Image 2025-07-05 at 18.51.31_46b7483a.jpg",
-    },
-    {
-      id: 4,
-      name: "Space Cap",
-      imageUrl: "/Eatrite.jpg",
-    },
-    {
-      id: 5,
-      name: "Lunar Tee",
-      imageUrl: "/Catering.jpg",
-    },
-  ]);
+  const [designs, setDesigns] = useState<Design[]>([]);
+  const [activeDesign, setActiveDesign] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const [activeDesign, setActiveDesign] = useState<number | null>(null);
+  useEffect(() => {
+    let isMounted = true;
 
-  const handleToggle = (id: number) => {
-    // On mobile (click), toggle visibility
+    const fetchDesigns = async () => {
+      try {
+        const res = await fetch("/api/viewdesign", { cache: "no-store" });
+        if (!res.ok) throw new Error("Failed to fetch designs");
+        const data = await res.json();
+
+        if (isMounted && Array.isArray(data)) {
+          setDesigns(data);
+        }
+      } catch (error) {
+        console.error("Failed to load designs:", error);
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+
+    fetchDesigns();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const handleToggle = (id: string) => {
     if (window.innerWidth < 640) {
-      setActiveDesign(activeDesign === id ? null : id);
+      setActiveDesign((prev) => (prev === id ? null : id));
     }
   };
 
@@ -51,7 +50,9 @@ const RecentDesign: React.FC = () => {
         Recent Designs
       </h2>
 
-      {designs.length === 0 ? (
+      {loading ? (
+        <p className="text-gray-500 text-sm">Loading designs...</p>
+      ) : designs.length === 0 ? (
         <p className="text-gray-500 text-sm">No designs uploaded yet.</p>
       ) : (
         <div
@@ -87,13 +88,13 @@ const RecentDesign: React.FC = () => {
                 ) : (
                   <img
                     src={design.imageUrl}
-                    alt={design.name}
+                    alt={design.title}
                     className="object-cover w-full h-full"
                   />
                 )}
               </div>
               <p className="mt-3 text-sm font-raleway font-semibold text-gray-700 text-center">
-                {design.name}
+                {design.title}
               </p>
             </div>
           ))}

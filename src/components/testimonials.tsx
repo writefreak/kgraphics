@@ -22,10 +22,14 @@ const Testimonials = () => {
           const data = await res.json();
           setReviews(data);
         } else {
-          console.error("Failed to fetch approved reviews");
+          if (process.env.NODE_ENV === "development") {
+            console.error("Failed to fetch approved reviews");
+          }
         }
       } catch (err) {
-        console.error("Error fetching reviews:", err);
+        if (process.env.NODE_ENV === "development") {
+          console.error("Error fetching reviews:", err);
+        }
       } finally {
         setLoading(false); // <-- stop loading
       }
