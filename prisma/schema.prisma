@@ -24,6 +24,7 @@ model Design {
   description String
   imageUrl    String
   createdAt   DateTime @default(now())
+  featured    Boolean @default(false)
 }
 
 model Review {

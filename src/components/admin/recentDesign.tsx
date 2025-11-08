@@ -18,7 +18,7 @@ const RecentDesign: React.FC = () => {
 
     const fetchDesigns = async () => {
       try {
-        const res = await fetch("/api/viewdesign", { cache: "no-store" });
+        const res = await fetch("/api/viewdesign");
         if (!res.ok) throw new Error("Failed to fetch designs");
         const data = await res.json();
 

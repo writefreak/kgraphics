@@ -8,11 +8,13 @@ export async function GET() {
     const design = await prisma.design.findMany({
       orderBy: { createdAt: "desc" },
     });
-    console.log("design", design);
-    return NextResponse.json(design);
-  } catch (error) {
-    return NextResponse.json({
-      message: "Error",
-    });
+    console.log("Fetched designs:", design);
+    return NextResponse.json(design, { status: 200 });
+  } catch (error: any) {
+    console.error("❌ Prisma GET error:", error);
+    return NextResponse.json(
+      { message: error.message || "Error" },
+      { status: 500 }
+    );
   }
 }
