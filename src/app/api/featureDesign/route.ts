@@ -6,30 +6,38 @@ const prisma = new PrismaClient();
 export async function POST(req: NextRequest) {
   try {
     const { id } = await req.json();
-
     if (!id) {
+      return NextResponse.json({ error: "Missing design id" }, { status: 400 });
+    }
+
+    // Count currently featured designs
+    const featuredCount = await prisma.design.count({
+      where: { featured: "featured" },
+    });
+
+    if (featuredCount >= 12) {
       return NextResponse.json(
-        { error: "Design Id required" },
+        { error: "Cannot feature more than 12 designs" },
         { status: 400 }
       );
     }
 
-    //all other designs are unfeatured
-
-    await prisma.design.updateMany({
-      data: { featured: false },
-    });
-
-    const updated = await prisma.design.update({
+    const design = await prisma.design.update({
       where: { id },
-      data: { featured: true },
+      data: { featured: "featured" },
     });
-    console.log(updated);
-    return NextResponse.json({ message: "Design Featured", design: updated });
-  } catch (error) {
-    console.error("Error featuring design:", error);
+
+    // Log activity
+    await prisma.activity.create({
+      data: { activityType: "feature", description: `Featured design ${id}` },
+    });
+
+    // ✅ Always return valid JSON
+    return NextResponse.json({ success: true, design });
+  } catch (err) {
+    console.error("Feature design error:", err);
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      { error: "Something went wrong" },
       { status: 500 }
     );
   }

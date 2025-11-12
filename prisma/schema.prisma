@@ -24,7 +24,7 @@ model Design {
   description String
   imageUrl    String
   createdAt   DateTime @default(now())
-  featured    Boolean @default(false)
+  featured    String @default("unfeatured")
 }
 
 model Review {

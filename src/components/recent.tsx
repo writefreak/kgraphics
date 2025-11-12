@@ -1,9 +1,10 @@
 "use client";
+
 import { AnimatePresence, motion } from "framer-motion";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "./ui/dialog";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
-import { ChevronLast, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Loader } from "lucide-react";
 import Picture from "./ui/picture";
 
 const CARDS_PER_PAGE = 3;
@@ -11,7 +12,35 @@ const CARDS_PER_PAGE = 3;
 export function Recent() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [page, setPage] = useState(0);
-  const [direction, setDirection] = useState(0); // 1 for next, -1 for prev
+  const [direction, setDirection] = useState(0);
+  const [works, setWorks] = useState<{ id: string; img: string }[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch featured designs
+  useEffect(() => {
+    const fetchFeatured = async () => {
+      try {
+        const res = await fetch("/api/seeFeatured", { cache: "no-store" });
+        if (!res.ok) throw new Error("Failed to fetch featured designs");
+
+        const data = await res.json();
+        if (data.success && Array.isArray(data.designs)) {
+          setWorks(
+            data.designs.map((design: any) => ({
+              id: design.id,
+              img: design.imageUrl,
+            }))
+          );
+        }
+      } catch (error) {
+        console.error("Error loading featured designs:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFeatured();
+  }, []);
 
   const totalPages = Math.ceil(works.length / CARDS_PER_PAGE);
   const startIndex = page * CARDS_PER_PAGE;
@@ -34,7 +63,7 @@ export function Recent() {
   const variants = {
     enter: (dir: number) => ({
       x: dir > 0 ? "100%" : "-100%",
-      opacity: 1,
+      opacity: 0,
       position: "absolute",
     }),
     center: {
@@ -49,33 +78,45 @@ export function Recent() {
     }),
   };
 
+  if (loading)
+    return (
+      <p className="text-center py-10">
+        <Loader />
+      </p>
+    );
+  if (works.length === 0)
+    return (
+      <p className="text-center py-10 text-gray-400 font-raleway text-xs">
+        No featured designs yet.
+      </p>
+    );
+
   return (
-    <div className="mx-auto">
+    <div className="mx-auto w-full max-w-[950px]">
       <Dialog
         open={selectedImage !== null}
         onOpenChange={(open) => {
           if (!open) setSelectedImage(null);
         }}
       >
+        <DialogTitle></DialogTitle>
         {/* CARD WRAPPER */}
-        <div className="relative overflow-hidden w-full h-[450px] mb">
+        <div className="relative overflow-hidden w-full h-[450px] mb-4">
           <AnimatePresence initial={false} custom={direction}>
             <motion.div
-              layout
               key={page}
-              variants={variants}
               custom={direction}
-              exit="exit"
+              variants={variants}
               initial="enter"
               animate="center"
-              transition={{ duration: 0.7, ease: "easeInOut" }}
-              className="flex justify-center gap-4"
+              exit="exit"
+              transition={{ duration: 0.6, ease: "easeInOut" }}
+              className="flex gap-4 justify-start w-full absolute top-0 left-0"
             >
-              {currentCards.map((w, index) => (
-                <DialogTrigger asChild key={startIndex + index}>
+              {currentCards.map((w) => (
+                <DialogTrigger asChild key={w.id}>
                   <div
-                    data-aos="fade-up"
-                    className="w-[300px] h-[400px] hover:card-hover-effect cursor-pointer flex-shrink-0"
+                    className="w-[300px] h-[400px] flex-shrink-0 cursor-pointer hover:card-hover-effect"
                     onClick={() => setSelectedImage(w.img)}
                   >
                     <Picture
@@ -90,8 +131,8 @@ export function Recent() {
           </AnimatePresence>
         </div>
 
-        {/* BUTTONS UNDER */}
-        <div className="flex justify-center gap-4">
+        {/* NAV BUTTONS */}
+        <div className="flex justify-center gap-4 mb-6">
           <Button
             onClick={handlePrev}
             disabled={page === 0}
@@ -110,34 +151,17 @@ export function Recent() {
 
         {/* IMAGE MODAL */}
         {selectedImage && (
-          <DialogTitle>
-            <DialogContent className="bg-none flex flex-col items-center border-none shadow-none">
-              <div className="md:h-[510px] md:w-[440px]">
-                <img
-                  src={selectedImage}
-                  alt=""
-                  className="h-full w-full object-cover"
-                />
-              </div>
-            </DialogContent>
-          </DialogTitle>
+          <DialogContent className="bg-none flex flex-col items-center border-none shadow-none">
+            <div className="md:h-[510px] md:w-[440px]">
+              <img
+                src={selectedImage}
+                alt=""
+                className="h-full w-full object-cover rounded-md"
+              />
+            </div>
+          </DialogContent>
         )}
       </Dialog>
     </div>
   );
 }
-
-const works = [
-  { img: "/WhatsApp Image 2025-07-05 at 18.51.29_fc6cd04b.jpg" },
-  { img: "/WhatsApp Image 2025-07-05 at 18.51.28_35492685.jpg" },
-  { img: "/WhatsApp Image 2025-07-05 at 18.51.41_152958d8.jpg" },
-  { img: "/WhatsApp Image 2025-07-05 at 18.51.29_b27e6e1c.jpg" },
-  { img: "/first-oracle.jpg" },
-  { img: "/WhatsApp Image 2025-07-05 at 18.51.31_46b7483a.jpg" },
-  { img: "/WhatsApp Image 2025-07-05 at 18.51.35_0866ef69.jpg" },
-  { img: "/Eatrite.jpg" },
-  { img: "/Catering.jpg" },
-  { img: "/WhatsApp Image 2025-07-05 at 18.51.28_81db55ed.jpg" },
-  { img: "/WhatsApp Image 2025-07-05 at 18.51.36_70bb0f12.jpg" },
-  { img: "/WhatsApp Image 2025-07-05 at 18.51.31_9764a71a.jpg" },
-];

@@ -58,12 +58,12 @@ const Testimonials = () => {
             </div>
           ) : error ? (
             <div className="text-center py-10">
-              <p className="text-gray-500 text-sm mb-4">
-                Network error — unable to load reviews.
+              <p className="text-gray-400 font-raleway text-sm mb-4">
+                Sorry, we're unable to load reviews
               </p>
               <button
                 onClick={() => window.location.reload()}
-                className="px-4 py-2 bg-[#030142] text-white rounded-md text-sm"
+                className="px-4 py-1 text-xs bg-[#030142] text-white rounded-full font-raleway "
               >
                 Try Again
               </button>
