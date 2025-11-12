@@ -13,7 +13,7 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import UploadImg from "../ui/uploadImg";
-import { supabase } from "../../../lib/supabaseClient"; // ✅ connects Supabase directly
+import { supabase } from "../../../lib/supabaseClient";
 
 const AddDesign = () => {
   const [title, setTitle] = useState("");
@@ -22,10 +22,8 @@ const AddDesign = () => {
   const [message, setMessage] = useState<{
     type: "success" | "error" | "";
     text: string;
-  }>({
-    type: "",
-    text: "",
-  });
+  }>({ type: "", text: "" });
+  const [dialogOpen, setDialogOpen] = useState(false); // <- manage open state
 
   const handleImageUpload = (url: string) => setImageUrl(url);
 
@@ -45,7 +43,7 @@ const AddDesign = () => {
       const { data, error } = await supabase.from("Design").insert([
         {
           title,
-          imageUrl, // ⚠️ use the exact column name in your Prisma/Supabase schema
+          imageUrl,
           description: "",
         },
       ]);
@@ -55,6 +53,9 @@ const AddDesign = () => {
       setMessage({ type: "success", text: "Design uploaded successfully!" });
       setTitle("");
       setImageUrl("");
+
+      // Close dialog automatically after success
+      setTimeout(() => setDialogOpen(false), 800); // close after 0.8s
     } catch (err) {
       console.error("❌ Error uploading design:", err);
       setMessage({
@@ -68,7 +69,7 @@ const AddDesign = () => {
 
   return (
     <div className="md:pt-0 pt-4">
-      <Dialog>
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogTrigger asChild>
           <Button className="h-14 w-full hover:bg-gray-300 bg-gray-200 rounded-xl flex justify-center items-center gap-3">
             <Plus strokeWidth={1} className="h-6 w-6 text-black" />
@@ -86,36 +87,32 @@ const AddDesign = () => {
             <DialogDescription></DialogDescription>
           </DialogHeader>
 
-          <div>
-            <UploadImg onUpload={handleImageUpload} />
+          <UploadImg onUpload={handleImageUpload} />
 
-            <div className="w-full md:px-2 py-8 flex flex-col gap-2">
-              <span className="font-raleway text-sm">
-                Enter your design name
-              </span>
-              <input
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                className="w-full rounded-sm p-1 border border-gray-300 outline-0 placeholder:font-raleway placeholder:text-sm text-sm"
-                type="text"
-                placeholder="Please enter a name for your design"
-              />
-            </div>
-
-            {message.text && (
-              <p
-                className={`text-sm mt-2 font-raleway ${
-                  message.type === "success"
-                    ? "text-green-600"
-                    : message.type === "error"
-                    ? "text-red-600"
-                    : "text-gray-600"
-                }`}
-              >
-                {message.text}
-              </p>
-            )}
+          <div className="w-full md:px-2 py-8 flex flex-col gap-2">
+            <span className="font-raleway text-sm">Enter your design name</span>
+            <input
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="w-full rounded-sm p-1 border border-gray-300 outline-0 placeholder:font-raleway placeholder:text-sm text-sm"
+              type="text"
+              placeholder="Please enter a name for your design"
+            />
           </div>
+
+          {message.text && (
+            <p
+              className={`text-sm mt-2 font-raleway ${
+                message.type === "success"
+                  ? "text-green-600"
+                  : message.type === "error"
+                  ? "text-red-600"
+                  : "text-gray-600"
+              }`}
+            >
+              {message.text}
+            </p>
+          )}
 
           <DialogFooter className="flex flex-row gap-3 w-full">
             <DialogClose asChild>

@@ -78,12 +78,7 @@ export function Recent() {
     }),
   };
 
-  if (loading)
-    return (
-      <p className="text-center py-10">
-        <Loader />
-      </p>
-    );
+  if (loading) return <p className="text-center py-10">Loading designs...</p>;
   if (works.length === 0)
     return (
       <p className="text-center py-10 text-gray-400 font-raleway text-xs">
