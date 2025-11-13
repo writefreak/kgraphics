@@ -61,7 +61,7 @@ export function MobileRecent() {
               </CarouselItem>
             ))
           ) : (
-            <p className="text-center w-full text-gray-600">
+            <p className="text-center w-full text-gray-400 font-raleway text-sm py-6">
               No featured designs yet.
             </p>
           )}

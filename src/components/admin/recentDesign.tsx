@@ -12,6 +12,10 @@ const RecentDesign: React.FC = () => {
   const [activeDesign, setActiveDesign] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState<string | null>(null);
+  const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
+  const [confirmFeature, setConfirmFeature] = useState<string | null>(null);
+  const [featuring, setFeaturing] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState<string | null>(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -22,12 +26,9 @@ const RecentDesign: React.FC = () => {
         if (!res.ok) throw new Error("Failed to fetch designs");
         const data = await res.json();
 
-        // Handle both wrapped and direct array responses
         const designsArray = Array.isArray(data) ? data : data.design || [];
 
-        if (isMounted) {
-          setDesigns(designsArray);
-        }
+        if (isMounted) setDesigns(designsArray);
       } catch (error) {
         console.error("Failed to load designs:", error);
       } finally {
@@ -49,6 +50,7 @@ const RecentDesign: React.FC = () => {
   };
 
   const handleFeature = async (id: string) => {
+    setFeaturing(id);
     try {
       setMessage(null);
       const res = await fetch("/api/featureDesign", {
@@ -65,6 +67,36 @@ const RecentDesign: React.FC = () => {
       console.error("Feature design error:", error);
       setMessage("Error featuring design.");
     } finally {
+      setFeaturing(null);
+      setConfirmFeature(null);
+      setTimeout(() => setMessage(null), 3000);
+    }
+  };
+
+  const confirmDeleteDesign = (id: string) => setConfirmDelete(id);
+  const confirmFeatureDesign = (id: string) => setConfirmFeature(id);
+
+  const handleDelete = async (id: string) => {
+    setDeleting(id);
+    try {
+      setMessage(null);
+      const res = await fetch("/api/deleteDesign", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to delete design");
+
+      setDesigns((prev) => prev.filter((design) => design.id !== id));
+      setMessage("Design deleted successfully.");
+    } catch (error) {
+      console.error("Delete design error:", error);
+      setMessage("Error deleting design.");
+    } finally {
+      setDeleting(null);
+      setConfirmDelete(null);
       setTimeout(() => setMessage(null), 3000);
     }
   };
@@ -109,13 +141,19 @@ const RecentDesign: React.FC = () => {
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          handleFeature(design.id);
+                          confirmFeatureDesign(design.id);
                         }}
                         className="px-4 py-2 bg-[#030142] text-white rounded-md text-sm font-medium hover:bg-blue-900 transition"
                       >
                         Feature
                       </button>
-                      <button className="px-4 py-2 bg-red-900 text-white rounded-md text-sm font-medium hover:bg-red-700 transition">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          confirmDeleteDesign(design.id);
+                        }}
+                        className="px-4 py-2 bg-red-900 text-white rounded-md text-sm font-medium hover:bg-red-700 transition"
+                      >
                         Delete
                       </button>
                     </div>
@@ -133,6 +171,58 @@ const RecentDesign: React.FC = () => {
               </p>
             </div>
           ))}
+        </div>
+      )}
+
+      {confirmDelete && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-80 text-center">
+            <p className="text-gray-800 text-sm py-5 font-raleway">
+              Are you sure you want to delete this design?
+            </p>
+            <div className="flex justify-center gap-2">
+              <button
+                onClick={() => handleDelete(confirmDelete)}
+                disabled={deleting === confirmDelete}
+                className="px-4 flex-1 py-2 bg-red-700 text-white rounded-md text-sm hover:bg-red-800 transition disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                {deleting === confirmDelete ? "Deleting..." : "Yes, Delete"}
+              </button>
+              <button
+                onClick={() => setConfirmDelete(null)}
+                disabled={deleting === confirmDelete}
+                className="px-4 py-2 flex-1 bg-[#030142] text-gray-300 rounded-md text-sm hover:bg-gray-400 transition disabled:opacity-60"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {confirmFeature && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-80 text-center">
+            <p className="text-gray-800 text-sm py-5 font-raleway">
+              Feature this design?
+            </p>
+            <div className="flex justify-center gap-2">
+              <button
+                onClick={() => handleFeature(confirmFeature)}
+                disabled={featuring === confirmFeature}
+                className="px-4 flex-1 py-2 bg-[#030142] text-white rounded-md text-sm hover:bg-blue-900 transition disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                {featuring === confirmFeature ? "Featuring..." : "Yes, Feature"}
+              </button>
+              <button
+                onClick={() => setConfirmFeature(null)}
+                disabled={featuring === confirmFeature}
+                className="px-4 py-2 flex-1 bg-gray-200 text-gray-700 rounded-md text-sm hover:bg-gray-300 transition disabled:opacity-60"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
