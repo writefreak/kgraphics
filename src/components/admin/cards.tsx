@@ -9,7 +9,8 @@ type VisitorDataItem = {
 const Cards = () => {
   const [totalVisits, setTotalVisits] = useState("--");
   const [totalReviews, setTotalReviews] = useState("--");
-  const [totalDownloads, setTotalDownloads] = useState("--"); // <-- added
+  const [totalDownloads, setTotalDownloads] = useState("--");
+  const [totalDesigns, setTotalDesigns] = useState("--"); // <-- added
 
   useEffect(() => {
     const fetchTotalVisits = async () => {
@@ -42,7 +43,7 @@ const Cards = () => {
 
     const fetchTotalDownloads = async () => {
       try {
-        const res = await fetch(`/api/logDownload?t=${new Date().getTime()}`); // <-- your API
+        const res = await fetch(`/api/logDownload?t=${new Date().getTime()}`);
         if (res.ok) {
           const data = await res.json();
           setTotalDownloads(data.total || "--");
@@ -54,26 +55,31 @@ const Cards = () => {
       }
     };
 
+    const fetchTotalDesigns = async () => {
+      try {
+        const res = await fetch(`/api/countdesign?t=${new Date().getTime()}`);
+        if (res.ok) {
+          const data = await res.json();
+          setTotalDesigns(data.totalDesigns || "--"); // <-- get design count
+        } else {
+          console.error("Failed to fetch total designs");
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
     fetchTotalVisits();
     fetchTotalReviews();
-    fetchTotalDownloads(); // <-- call it
+    fetchTotalDownloads();
+    fetchTotalDesigns(); // <-- call it
   }, []);
 
   const details = [
-    { id: 1, title: "Total visits", figure: "300", action: "Users Visited" },
-    {
-      id: 2,
-      title: "Total story downloads",
-      figure: "300",
-      action: "Users downloaded",
-    },
-    { id: 3, title: "Total Reviews", figure: "300", action: "Users Reviewed" },
-    {
-      id: 4,
-      title: "Total designs",
-      figure: "300",
-      action: "Designs completed",
-    },
+    { id: 1, title: "Total visits", action: "Users Visited" },
+    { id: 2, title: "Total story downloads", action: "Users downloaded" },
+    { id: 3, title: "Total Reviews", action: "Users Reviewed" },
+    { id: 4, title: "Total designs", action: "Designs completed" },
   ];
 
   return (
@@ -88,10 +94,11 @@ const Cards = () => {
                   {d.id === 1
                     ? totalVisits
                     : d.id === 2
-                    ? totalDownloads // <-- use totalDownloads here
+                    ? totalDownloads
                     : d.id === 3
                     ? totalReviews
-                    : d.figure}
+                    : totalDesigns}{" "}
+                  {/* <-- show total designs */}
                 </h2>
                 <p className=" text-sm text-white/80">{d.action}</p>
               </div>
