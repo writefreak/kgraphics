@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Button } from "./ui/button";
 import BrandStory from "./brandStory";
 import { ReviewDialog } from "./reviewDialog";
+import Link from "next/link";
 
 const CallToAction = () => {
   return (
@@ -19,8 +20,13 @@ const CallToAction = () => {
             Tell us what you love about our services and <br /> how we can
             improve them to shine even brighter.
           </p>
-          <div className="pt-4">
+          <div className="pt-4 flex gap-4">
             <ReviewDialog />
+            <Link href={"/portfolio"}>
+              <Button className="h-7 md:p-4 text-xs md:text-sm font-raleway hover:bg-transparent bg-transparent hover:-translate-y-1 transition-all duration-500 border-2 border-[#498cff] text-white rounded-full">
+                See Our Portfolio
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
