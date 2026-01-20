@@ -1,11 +1,13 @@
 import Footer from "@/components/footer";
+import Header from "@/components/header";
 import UserDesigns from "@/components/ui/userDesigns";
 import React from "react";
 
 const page = () => {
   return (
     <div>
-      <div className="md:px-14 px-4 md:py-20 py-4">
+      <Header />
+      <div className="md:px-14 px-4 md:py-32 py-4">
         <UserDesigns />
       </div>
       <Footer />
