@@ -84,7 +84,7 @@ const Cards = () => {
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-2 gap-2 md:gap-3">
         {details.map((d) => (
           <div key={d.id} className="bg-[#030142] rounded-xl p-4 shadow-sm">
             <div className="flex flex-col gap-3">
@@ -94,10 +94,10 @@ const Cards = () => {
                   {d.id === 1
                     ? totalVisits
                     : d.id === 2
-                    ? totalDownloads
-                    : d.id === 3
-                    ? totalReviews
-                    : totalDesigns}{" "}
+                      ? totalDownloads
+                      : d.id === 3
+                        ? totalReviews
+                        : totalDesigns}{" "}
                   {/* <-- show total designs */}
                 </h2>
                 <p className=" text-sm text-white/80">{d.action}</p>

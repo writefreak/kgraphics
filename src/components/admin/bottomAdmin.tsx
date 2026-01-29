@@ -1,11 +1,12 @@
 import React from "react";
-import { MyChart } from "./my-chart";
 import Activity from "./activity";
+import { MyChart } from "./my-chart";
 
 const BottomAdmin = () => {
   return (
-    <div className="">
-      <Activity />
+    <div className="grid grid-cols-2">
+      {/* <Activity /> */}
+      {/* <MyChart /> */}
     </div>
   );
 };

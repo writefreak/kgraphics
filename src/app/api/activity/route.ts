@@ -17,7 +17,7 @@ export async function GET() {
     console.error("Failed to fetch recent activity:", err);
     return NextResponse.json(
       { message: "Failed to fetch recent activity" },
-      { status: 500 }
+      { status: 500 },
     );
   } finally {
     await prisma.$disconnect();

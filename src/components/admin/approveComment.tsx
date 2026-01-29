@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Card } from "../ui/card";
 import { Button } from "../ui/button";
+import { Info } from "lucide-react";
 
 const ApproveComment = () => {
   const [reviews, setReviews] = useState<any[]>([]);
@@ -38,7 +39,7 @@ const ApproveComment = () => {
       });
       if (res.ok) {
         setReviews((prev) =>
-          prev.map((r) => (r.id === id ? { ...r, status: "approved" } : r))
+          prev.map((r) => (r.id === id ? { ...r, status: "approved" } : r)),
         );
       } else {
         console.error("Failed to approve");
@@ -74,52 +75,65 @@ const ApproveComment = () => {
   return (
     <div>
       <div className="md:px-0 md:pt-0 pt-10">
-        <div className="flex md:grid md:grid-cols-3 gap-4 no-scrollbar overflow-x-auto scroll-snap-x scroll-start-offset snap-x snap-mandatory">
-          {reviews.map((t) => (
-            <Card
-              data-aos="zoom-in"
-              key={t.id}
-              className="p-5 py-9 md:py-8 bg-white rounded-md shrink-0 w-[85%] snap-start md:w-auto"
-            >
-              <div className="flex flex-col h-full justify-between">
-                <p className="font-inter text-[12.6px] text-black/80">
-                  {t.reviewText}
-                </p>
+        {reviews.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-70 overflow-y-hidden">
+            {/* <Info height={40} width={40} /> */}
+            <p className="text-center text-xl text-neutral-500">
+              Sorry, No designs yet
+            </p>
+          </div>
+        ) : (
+          <div className="flex md:grid md:grid-cols-3 gap-4 no-scrollbar overflow-x-auto scroll-snap-x scroll-start-offset snap-x snap-mandatory">
+            {reviews.map((t) => (
+              <Card
+                data-aos="zoom-in"
+                key={t.id}
+                className="p-5 py-9 md:py-8 bg-white rounded-md shrink-0 w-[85%] snap-start md:w-auto"
+              >
+                <div className="flex flex-col h-full justify-between">
+                  <p className="font-inter text-[12.6px] text-black/80">
+                    {t.reviewText}
+                  </p>
 
-                <div className="text-black flex flex-col gap-2 pt-5 md:pt-5">
-                  <h3 className="font-raleway text-sm font-[600]">{t.name}</h3>
-                  <span className="font-raleway text-xs">{t.businessName}</span>
+                  <div className="text-black flex flex-col gap-2 pt-5 md:pt-5">
+                    <h3 className="font-raleway text-sm font-[600]">
+                      {t.name}
+                    </h3>
+                    <span className="font-raleway text-xs">
+                      {t.businessName}
+                    </span>
+                  </div>
                 </div>
-              </div>
-              <div className="self-end flex gap-3 md:pt-4">
-                <Button
-                  className="bg-[#030712] h-8"
-                  disabled={
-                    approvingIds.includes(t.id) || t.status === "approved"
-                  }
-                  onClick={() => handleApprove(t.id)}
-                >
-                  <p className="text-xs md:text-sm">
-                    {t.status === "approved"
-                      ? "Approved"
-                      : approvingIds.includes(t.id)
-                      ? "Approving..."
-                      : "Approve"}
-                  </p>
-                </Button>
-                <Button
-                  className="bg-red-700 h-8"
-                  disabled={deletingIds.includes(t.id)}
-                  onClick={() => handleDelete(t.id)}
-                >
-                  <p className="text-xs md:text-sm">
-                    {deletingIds.includes(t.id) ? "Deleting..." : "Delete"}
-                  </p>
-                </Button>
-              </div>
-            </Card>
-          ))}
-        </div>
+                <div className="self-end flex gap-3 md:pt-4">
+                  <Button
+                    className="bg-[#030712] h-8"
+                    disabled={
+                      approvingIds.includes(t.id) || t.status === "approved"
+                    }
+                    onClick={() => handleApprove(t.id)}
+                  >
+                    <p className="text-xs md:text-sm">
+                      {t.status === "approved"
+                        ? "Approved"
+                        : approvingIds.includes(t.id)
+                          ? "Approving..."
+                          : "Approve"}
+                    </p>
+                  </Button>
+                  <Button
+                    className="bg-red-700 h-8"
+                    disabled={deletingIds.includes(t.id)}
+                    onClick={() => handleDelete(t.id)}
+                  >
+                    <p className="text-xs md:text-sm">
+                      {deletingIds.includes(t.id) ? "Deleting..." : "Delete"}
+                    </p>
+                  </Button>
+                </div>
+              </Card>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import { TrendingUp } from "lucide-react";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 
@@ -13,20 +12,22 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
-  ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
+  type ChartConfig,
 } from "@/components/ui/chart";
 
 export const description = "An area chart with gradient fill";
 
-// Define the type for your chart data from the API
-type ChartDataItem = {
-  date: string;
-  desktop: number;
-  mobile: number;
-};
+const chartData = [
+  { month: "January", desktop: 186, mobile: 80 },
+  { month: "February", desktop: 305, mobile: 200 },
+  { month: "March", desktop: 237, mobile: 120 },
+  { month: "April", desktop: 73, mobile: 190 },
+  { month: "May", desktop: 209, mobile: 130 },
+  { month: "June", desktop: 214, mobile: 140 },
+];
 
 const chartConfig = {
   desktop: {
@@ -40,103 +41,31 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export function MyChart() {
-  const [chartData, setChartData] = React.useState<ChartDataItem[]>([]);
-  const [filteredData, setFilteredData] = React.useState<ChartDataItem[]>([]);
-  const [timeRange, setTimeRange] = React.useState<"7d" | "1m" | "90d">("90d");
-
-  // Fetch chart data from the API
-  React.useEffect(() => {
-    async function fetchData() {
-      try {
-        const res = await fetch(`/api/countVisits?t=${new Date().getTime()}`);
-        if (!res.ok) throw new Error("Failed to fetch chart data");
-        const data: ChartDataItem[] = await res.json();
-        setChartData(data);
-      } catch (err) {
-        console.error("Error fetching chart data:", err);
-      }
-    }
-    fetchData();
-  }, []);
-
-  // Filter chart data based on time range
-  React.useEffect(() => {
-    if (!chartData.length) return;
-
-    const today = new Date();
-    let daysToSubtract = 90;
-
-    if (timeRange === "7d") daysToSubtract = 7;
-    else if (timeRange === "1m") daysToSubtract = 30;
-
-    const startDate = new Date(today);
-    startDate.setDate(today.getDate() - daysToSubtract);
-
-    const filtered = chartData.filter(
-      (item) => new Date(item.date) >= startDate
-    );
-    setFilteredData(filtered);
-  }, [timeRange, chartData]);
-
   return (
     <Card>
       <CardHeader>
         <CardTitle>Area Chart - Gradient</CardTitle>
         <CardDescription>
-          Showing total visitors for the selected time range
+          Showing total visitors for the last 6 months
         </CardDescription>
-        <div className="flex space-x-2 pt-2">
-          <button
-            onClick={() => setTimeRange("7d")}
-            className={`px-3 py-1 rounded-md ${
-              timeRange === "7d"
-                ? "bg-blue-500 text-white"
-                : "bg-gray-200 text-gray-800"
-            }`}
-          >
-            7 Days
-          </button>
-          <button
-            onClick={() => setTimeRange("1m")}
-            className={`px-3 py-1 rounded-md ${
-              timeRange === "1m"
-                ? "bg-blue-500 text-white"
-                : "bg-gray-200 text-gray-800"
-            }`}
-          >
-            1 Month
-          </button>
-          <button
-            onClick={() => setTimeRange("90d")}
-            className={`px-3 py-1 rounded-md ${
-              timeRange === "90d"
-                ? "bg-blue-500 text-white"
-                : "bg-gray-200 text-gray-800"
-            }`}
-          >
-            90 Days
-          </button>
-        </div>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
           <AreaChart
             accessibilityLayer
-            data={filteredData}
-            margin={{ left: 12, right: 12 }}
+            data={chartData}
+            margin={{
+              left: 12,
+              right: 12,
+            }}
           >
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="date"
+              dataKey="month"
               tickLine={false}
               axisLine={false}
               tickMargin={8}
-              tickFormatter={(value) =>
-                new Date(value).toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                })
-              }
+              tickFormatter={(value) => value.slice(0, 3)}
             />
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <defs>
@@ -169,6 +98,7 @@ export function MyChart() {
               dataKey="mobile"
               type="natural"
               fill="url(#fillMobile)"
+              fillOpacity={0.4}
               stroke="var(--color-mobile)"
               stackId="a"
             />
@@ -176,6 +106,7 @@ export function MyChart() {
               dataKey="desktop"
               type="natural"
               fill="url(#fillDesktop)"
+              fillOpacity={0.4}
               stroke="var(--color-desktop)"
               stackId="a"
             />
@@ -186,7 +117,10 @@ export function MyChart() {
         <div className="flex w-full items-start gap-2 text-sm">
           <div className="grid gap-2">
             <div className="flex items-center gap-2 leading-none font-medium">
-              Trending up <TrendingUp className="h-4 w-4" />
+              Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+            </div>
+            <div className="text-muted-foreground flex items-center gap-2 leading-none">
+              January - June 2024
             </div>
           </div>
         </div>
