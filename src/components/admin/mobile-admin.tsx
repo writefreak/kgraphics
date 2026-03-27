@@ -21,7 +21,7 @@ const MobileAdmin = ({ className }: Props) => {
         <SheetTrigger className="" asChild>
           <Menu />
         </SheetTrigger>
-        <SheetContent className="bg-white p-2">
+        <SheetContent className="not-dark:bg-white p-2">
           <SheetTitle>
             {/* <MainMenu /> */}
             <div className="space-y-5 text-sm pt-10">
@@ -30,28 +30,31 @@ const MobileAdmin = ({ className }: Props) => {
                 href={"/"}
                 className="flex  hover:bg-[#030712]/20 gap-4 items-center bg-white/10 p-1.5 rounded-md"
               >
-                <Home width={18} className="text-[#030712]" />
+                <Home width={18} className="not-dark:text-[#030712]" />
                 <p className="text-sm">Home</p>
               </Link>
               <Link
                 href={"/dashboard"}
                 className="flex  hover:bg-[#030712]/20 gap-4 items-center bg-white/10 p-1.5 rounded-md"
               >
-                <LayoutDashboard width={18} className="text-[#030712]" />
+                <LayoutDashboard
+                  width={18}
+                  className="not-dark:text-[#030712]"
+                />
                 <p className="text-sm">Dashboard</p>
               </Link>
               <Link
                 href={"/userReviews"}
                 className="flex hover:bg-[#030712]/20 items-center rounded-md p-1.5 gap-4 "
               >
-                <User className="text-[#030712]" width={18} />
+                <User className="not-dark:text-[#030712]" width={18} />
                 <p>User Reviews</p>
               </Link>
               <Link
                 href={"/designs"}
                 className="flex items-center rounded-md p-1.5 gap-4 hover:bg-[#030712]/20 "
               >
-                <Newspaper className="text-[#030712]" width={18} />
+                <Newspaper className="not-dark:text-[#030712]" width={18} />
                 <p>Designs</p>
               </Link>
 
@@ -59,7 +62,7 @@ const MobileAdmin = ({ className }: Props) => {
                 href={"/login"}
                 className="flex items-center rounded-md p-1.5 gap-4 hover:bg-[#030712]/20"
               >
-                <LogOut className="text-[#030712] " width={18} />
+                <LogOut className="not-dark:text-[#030712]" width={18} />
                 <p>Logout</p>
               </Link>
             </div>

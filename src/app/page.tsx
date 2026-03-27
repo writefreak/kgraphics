@@ -18,6 +18,7 @@ const page = () => {
     <div className="">
       <AOSInit />
       <Header />
+
       <Mobileheader />
       <div className="md:pt-40 pt-32 px-0 p-4 md:px-14">
         <Backdrop />

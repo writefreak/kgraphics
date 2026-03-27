@@ -1,18 +1,14 @@
 "use client";
 
 import * as React from "react";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "./ui/Recentcarousel";
 import Picture from "./ui/picture";
 
 export function MobileRecent() {
   const [images, setImages] = React.useState<{ id: string; img: string }[]>([]);
   const [loading, setLoading] = React.useState(true);
+  const scrollRef = React.useRef<HTMLDivElement>(null);
+  const intervalRef = React.useRef<NodeJS.Timeout | null>(null);
+  const repeated = [...images, ...images, ...images];
 
   React.useEffect(() => {
     const fetchFeatured = async () => {
@@ -26,7 +22,7 @@ export function MobileRecent() {
             data.designs.map((design: any) => ({
               id: design.id,
               img: design.imageUrl,
-            }))
+            })),
           );
         } else {
           console.warn("Unexpected API response format:", data);
@@ -41,37 +37,64 @@ export function MobileRecent() {
     fetchFeatured();
   }, []);
 
+  React.useEffect(() => {
+    const el = scrollRef.current;
+    if (!el || images.length === 0) return;
+
+    intervalRef.current = setInterval(() => {
+      el.scrollLeft += 0.5;
+      if (el.scrollLeft >= el.scrollWidth / 3) {
+        el.scrollLeft = 0;
+      }
+    }, 16);
+
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [images]);
+
+  const pause = () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+  };
+  const resume = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    intervalRef.current = setInterval(() => {
+      el.scrollLeft += 0.5;
+      if (el.scrollLeft >= el.scrollWidth / 3) el.scrollLeft = 0;
+    }, 16);
+  };
+
   if (loading) return <p className="text-center py-10">Loading...</p>;
 
   return (
-    <div data-aos="fade-up" className="overflow-hidden">
-      <Carousel className="mx-auto px-5 pb-10">
-        <CarouselContent className="pb-4">
-          {images.length > 0 ? (
-            images.map((image) => (
-              <CarouselItem
-                key={image.id}
-                className="relative flex h-[500px] w-[270px] items-center justify-center"
-              >
-                <Picture
-                  className="w-full h-full object-cover absolute rounded-md"
-                  alt=""
-                  src={image.img}
-                />
-              </CarouselItem>
-            ))
-          ) : (
-            <p className="text-center w-full text-gray-400 font-raleway text-sm py-6">
-              No featured designs yet.
-            </p>
-          )}
-        </CarouselContent>
-
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-3 z-10">
-          <CarouselPrevious className="bg-[#030142] text-white" />
-          <CarouselNext className="bg-[#030142] text-white" />
-        </div>
-      </Carousel>
+    <div data-aos="fade-up" className="overflow-hidden pb-10 pt-8">
+      <div
+        ref={scrollRef}
+        onTouchStart={pause}
+        onTouchEnd={resume}
+        className="flex gap-4 overflow-x-auto scrollbar-hide px-5"
+      >
+        {images.length > 0 ? (
+          repeated.map((image, i) => (
+            <div
+              key={`${image.id}-${i}`}
+              data-card
+              className="relative flex-shrink-0 w-[270px] h-[400px]"
+            >
+              <Picture
+                className="w-full h-full object-cover rounded-md"
+                alt=""
+                src={image.img}
+              />
+            </div>
+          ))
+        ) : (
+          <p className="text-center w-full text-gray-400 font-raleway text-sm py-6">
+            No featured designs yet.
+          </p>
+        )}
+      </div>
     </div>
   );
 }

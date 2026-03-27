@@ -18,6 +18,7 @@ import { Link as ScrollLink } from "react-scroll";
 import { useState } from "react";
 import { Button } from "./ui/button";
 import Link from "next/link";
+import { ThemeSwitch } from "./ui/theme-switch";
 
 export function MobileMenu() {
   const [activeIndex, setActiveIndex] = useState<number>(0);
@@ -26,11 +27,11 @@ export function MobileMenu() {
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
-        <Menu className="text-[#030142]" />
+        <Menu className="not-dark:text-[#030142]" />
       </SheetTrigger>
-      <SheetContent className="bg-white">
-        <SheetHeader className="bg-[#030142] h-28 rounded-bl-4xl w-full flex justify-end-safe">
-          <SheetTitle className="text-xl text-center text-white pt-5 font-raleway">
+      <SheetContent className="not-dark:bg-white">
+        <SheetHeader className="bg-[#030142] dark:bg-[#498cff] h-28 w-full flex justify-end-safe">
+          <SheetTitle className="text-xl text-center pt-5 font-raleway">
             Hello, Welcome 👋
           </SheetTitle>
         </SheetHeader>
@@ -51,21 +52,21 @@ export function MobileMenu() {
                 key={index}
                 className={
                   isActive
-                    ? "bg-[#030142]/15 h-7 rounded-l-md flex gap-2 flex-row items-center px-8 border-r-5  py-6 border-r-[#030142]"
+                    ? "bg-[#030142]/15 h-7  flex gap-2 flex-row items-center px-8 border-r-5  py-6 border-r-[#030142]"
                     : " h-7 rounded-none flex gap-2 flex-row items-center px-6 py-6"
                 }
               >
                 {l.icon}
-                <h3 className="text-sm text-[#030142]">{l.title}</h3>
+                <h3 className="text-sm not-dark:text-[#030142]">{l.title}</h3>
               </ScrollLink>
             );
           })}
           <div>
-            <Link href={"/dashboard"}>
+            {/* <Link href={"/dashboard"}>
               <Button className="bg-[#030142] w-full">
                 <h3 className="text-sm text-white">Login</h3>
               </Button>
-            </Link>
+            </Link> */}
           </div>
         </div>
       </SheetContent>
@@ -76,18 +77,18 @@ export function MobileMenu() {
 const links = [
   {
     title: "Home",
-    icon: <House className="text-[#030142]" />,
+    icon: <House className="not-dark:text-[#030142]" />,
   },
   {
     title: "Services",
-    icon: <BriefcaseBusiness className="text-[#030142]" />,
+    icon: <BriefcaseBusiness className="not-dark:text-[#030142]" />,
   },
   {
     title: "Reviews",
-    icon: <Star className="text-[#030142]" />,
+    icon: <Star className="not-dark:text-[#030142]" />,
   },
   {
     title: "Portfolio",
-    icon: <GalleryVerticalEnd className="text-[#030142]" />,
+    icon: <GalleryVerticalEnd className="not-dark:text-[#030142]" />,
   },
 ];

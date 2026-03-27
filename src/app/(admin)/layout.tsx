@@ -3,6 +3,7 @@ import React from "react";
 import Sidebar from "@/components/admin/sidebar";
 import MobileAdmin from "@/components/admin/mobile-admin";
 import { usePathname } from "next/navigation";
+import { ThemeSwitch } from "@/components/ui/theme-switch";
 
 const Dashboardlayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
@@ -28,7 +29,11 @@ const Dashboardlayout = ({ children }: { children: React.ReactNode }) => {
                 View and control your site from within
               </p>
             </div>
-            <div className="md:hidden">
+            <div className="hidden md:block">
+              <ThemeSwitch />
+            </div>
+            <div className="md:hidden flex items-center gap-2">
+              <ThemeSwitch />
               <MobileAdmin />
             </div>
           </div>

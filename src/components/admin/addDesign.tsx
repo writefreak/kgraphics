@@ -79,7 +79,7 @@ const AddDesign = () => {
           </Button>
         </DialogTrigger>
 
-        <DialogContent className="bg-white">
+        <DialogContent className="not-dark:bg-white bg-black/80 backdrop-blur-3xl">
           <DialogHeader>
             <DialogTitle className="font-raleway">
               Upload a new design
@@ -106,8 +106,8 @@ const AddDesign = () => {
                 message.type === "success"
                   ? "text-green-600"
                   : message.type === "error"
-                  ? "text-red-600"
-                  : "text-gray-600"
+                    ? "text-red-600"
+                    : "text-gray-600"
               }`}
             >
               {message.text}

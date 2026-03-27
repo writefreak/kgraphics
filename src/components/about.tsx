@@ -29,7 +29,7 @@ const About = () => {
             <Card
               data-aos="zoom-in"
               key={index}
-              className="p-4 md:p-7 bg-[#030142] rounded-md"
+              className="p-4 md:p-7 not-dark:bg-[#030142] rounded-md"
             >
               <div className="flex flex-col gap-2 items-center md:items-start">
                 <h3 className="text-xl font-raleway font-[500] md:text-left text-white">

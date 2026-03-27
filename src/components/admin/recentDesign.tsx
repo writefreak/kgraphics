@@ -5,6 +5,7 @@ interface Design {
   id: string;
   title: string;
   imageUrl: string;
+  featured: string;
 }
 
 const RecentDesign: React.FC = () => {
@@ -103,7 +104,7 @@ const RecentDesign: React.FC = () => {
 
   return (
     <div className="w-full">
-      <h2 className="text-xl font-raleway text-gray-800 mb-6">
+      <h2 className="text-xl font-raleway text-white/80 not-dark:text-gray-800 mb-6">
         Recent Designs
       </h2>
 
@@ -125,7 +126,7 @@ const RecentDesign: React.FC = () => {
           {designs.map((design) => (
             <div
               key={design.id}
-              className="relative flex-shrink-0 sm:flex-shrink-0 w-64 sm:w-auto border border-gray-200 rounded-xl p-2 md:p-3 flex flex-col items-center shadow-sm hover:shadow-md transition"
+              className="relative flex-shrink-0 sm:flex-shrink-0 w-64 sm:w-auto border border-gray-200 dark:border-white/10 dark:bg-white/5 dark:backdrop-blur-md rounded-xl p-2 md:p-3 flex flex-col items-center shadow-sm hover:shadow-md transition"
               onClick={() => handleToggle(design.id)}
               onMouseEnter={() =>
                 window.innerWidth >= 640 && setActiveDesign(design.id)
@@ -136,16 +137,19 @@ const RecentDesign: React.FC = () => {
             >
               <div className="w-full h-80 bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center relative">
                 {activeDesign === design.id ? (
-                  <div className="absolute inset-0 bg-white flex flex-col justify-center items-center">
+                  <div className="absolute inset-0 bg-white dark:bg-black/60 dark:backdrop-blur-sm flex flex-col justify-center items-center">
                     <div className="flex flex-row gap-3">
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
                           confirmFeatureDesign(design.id);
                         }}
-                        className="px-4 py-2 bg-[#030142] text-white rounded-md text-sm font-medium hover:bg-blue-900 transition"
+                        disabled={design.featured === "featured"}
+                        className="px-4 py-2 bg-[#030142] text-white rounded-md text-sm font-medium hover:bg-blue-900 transition disabled:opacity-60 disabled:cursor-not-allowed"
                       >
-                        Feature
+                        {design.featured === "featured"
+                          ? "Featured"
+                          : "Feature"}
                       </button>
                       <button
                         onClick={(e) => {
@@ -166,7 +170,7 @@ const RecentDesign: React.FC = () => {
                   />
                 )}
               </div>
-              <p className="mt-3 text-sm font-raleway font-semibold text-gray-700 text-center">
+              <p className="mt-3 text-sm font-raleway font-semibold text-white/80 not-dark:text-gray-700 text-center">
                 {design.title}
               </p>
             </div>

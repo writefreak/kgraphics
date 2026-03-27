@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { Card } from "../ui/card";
 
 type VisitorDataItem = {
   date: string;
@@ -86,7 +87,10 @@ const Cards = () => {
     <div className="flex flex-col gap-5">
       <div className="grid grid-cols-2 md:grid-cols-2 gap-2 md:gap-3">
         {details.map((d) => (
-          <div key={d.id} className="bg-[#030142] rounded-xl p-4 shadow-sm">
+          <Card
+            key={d.id}
+            className="not-dark:bg-[#030142] rounded-xl p-4 shadow-sm"
+          >
             <div className="flex flex-col gap-3">
               <p className="text-sm text-white/80">{d.title}</p>
               <div className="flex flex-col gap-2 text-white">
@@ -103,7 +107,7 @@ const Cards = () => {
                 <p className=" text-sm text-white/80">{d.action}</p>
               </div>
             </div>
-          </div>
+          </Card>
         ))}
       </div>
     </div>

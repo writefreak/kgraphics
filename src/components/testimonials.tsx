@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Card } from "./ui/card";
 import { Element } from "react-scroll";
+import { Star } from "lucide-react";
 
 interface Review {
   id: string;
@@ -78,20 +79,34 @@ const Testimonials = () => {
                 <Card
                   data-aos="zoom-in"
                   key={t.id}
-                  className="p-5 py-9 md:py-8 bg-white rounded-md shrink-0 w-[85%] snap-start md:w-auto"
+                  className="p-5 py-9 md:py-8 not-dark:bg-white rounded-md shrink-0 w-[85%] snap-start md:w-auto"
                 >
                   <div className="flex flex-col h-full justify-between">
-                    <p className="font-inter text-[12.6px] text-black/80">
+                    <p className="font-inter text-[12.6px] font-light text-white/80 not-dark:text-black/80">
                       {t.reviewText}
                     </p>
 
-                    <div className="text-black flex flex-col gap-2 pt-5 md:pt-7">
+                    <div className="not-dark:text-black flex flex-col gap-2 pt-5 md:pt-7">
                       <h3 className="font-raleway font-[600] text-base">
                         {t.name}
                       </h3>
                       <span className="font-raleway text-xs">
                         {t.businessName}
                       </span>
+                    </div>
+
+                    <div className="flex items-center">
+                      <div className="flex items-center gap-0.5">
+                        {[...Array(5)].map((_, i) => (
+                          <Star
+                            key={i}
+                            height={15}
+                            width={15}
+                            fill="gold"
+                            strokeWidth={0}
+                          />
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </Card>
@@ -105,3 +120,5 @@ const Testimonials = () => {
 };
 
 export default Testimonials;
+
+const icon = Star;

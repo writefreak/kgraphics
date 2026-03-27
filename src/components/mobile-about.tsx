@@ -19,7 +19,10 @@ export function MobileAbout({ className }: Props) {
           key={index}
           type="single"
           collapsible
-          className={cn(" py-3 bg-[#030142] rounded-md shadow-md", className)}
+          className={cn(
+            " py-3 not-dark:bg-[#030142] dark:bg-[#171717] rounded-md shadow-md",
+            className,
+          )}
         >
           <AccordionItem value="item-1" data-aos="fade-up">
             <AccordionTrigger className="text-lg font-raleway p-2 pl-3 text-white">

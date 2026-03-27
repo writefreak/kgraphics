@@ -16,7 +16,7 @@ const Body = () => {
     setIsClicked(!isClicked); // Toggle the state
   };
   return (
-    <div className="flex md:flex-row flex-col p-4 md:p-0 items-center px-5 md:px-0 gap-6 md:gap-32">
+    <div className="flex md:flex-row flex-col  p-4 md:p-0 items-center px-5 md:px-0 gap-6 md:gap-32">
       <div className="flex md:items-start items-center flex-col gap-3 md:gap-6">
         <h2 className="font-raleway text-2xl md:text-6xl leading font-[500] md:font-normal text-center w-96 md:w-[35rem] md:text-left">
           Transforming Ideas into Timeless Visual Expressions
@@ -36,8 +36,8 @@ const Body = () => {
             onClick={handleClick}
             className={
               isClicked
-                ? "bg-[#030142] h-7 w-28 text-xs font-raleway rounded-full "
-                : "hover:bg-[#030142] hover:text-white h-7 w-28 md:px-9 text-xs font-raleway hover:-translate-y-1 transition-all duration-500 border-2   bg-transparent text-[#030142] border-[#030142] rounded-full "
+                ? "bg-[#030142] dark:bg-[#498cff] h-7 w-28 text-xs font-raleway rounded-full "
+                : "hover:bg-[#030142] dark:text-white dark:bg-[#498cff] dark:hover:bg-[#498cff] not-dark:hover:text-white h-7 w-28 md:px-9 text-xs font-raleway hover:-translate-y-1 transition-all duration-500 border-2   not-dark:bg-transparent text-[#030142] border-[#030142] rounded-full "
             }
           >
             Let's Connect

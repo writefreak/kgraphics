@@ -40,7 +40,7 @@ const BrandStory = () => {
         <div className="pt-5 pb-3">
           <Button
             onClick={handleDownload}
-            className="h-7 md:p-4 text-xs md:text-base font-raleway hover:bg-transparent hover:-translate-y-1 transition-all duration-500 text-[#030142] border-[#030142] border-2 bg-transparent rounded-full"
+            className="h-7 md:p-4 text-xs md:text-base font-raleway hover:bg-transparent hover:-translate-y-1 transition-all duration-500 text-[#030142] border-[#030142] border-2 bg-transparent rounded-full dark:text-white/80 dark:bg-white/10 dark:border-white/20 dark:hover:bg-white/20 dark:backdrop-blur-md dark:hover:border-white/40"
           >
             Download Story Here
           </Button>

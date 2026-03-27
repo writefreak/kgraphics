@@ -112,7 +112,7 @@ export function ActivityTable() {
     <div className="w-full">
       <div className="overflow-hidden rounded-md border">
         <Table>
-          <TableHeader className="bg-gray-100">
+          <TableHeader className="not-dark:bg-gray-100 bg-[#171717]">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
