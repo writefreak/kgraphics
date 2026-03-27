@@ -43,7 +43,7 @@ const Testimonials = () => {
   return (
     <Element name="Reviews">
       <div className="md:pb-12 pb-6">
-        <div className="md:pt-7 md:pb-8 pt-10 pb-5 flex flex-col items-center ">
+        <div className="md:pt-0 md:pb-8 pt-10 pb-5 flex flex-col items-center ">
           <h2 className="md:text-3xl text-2xl font-raleway text-center font-[500]">
             Client Reviews
           </h2>

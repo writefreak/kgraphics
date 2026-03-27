@@ -1,22 +1,14 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "./ui/dialog";
 import { useState, useEffect } from "react";
-import { Button } from "./ui/button";
-import { ChevronLeft, ChevronRight, Loader } from "lucide-react";
 import Picture from "./ui/picture";
-
-const CARDS_PER_PAGE = 3;
 
 export function Recent() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [page, setPage] = useState(0);
-  const [direction, setDirection] = useState(0);
   const [works, setWorks] = useState<{ id: string; img: string }[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch featured designs
   useEffect(() => {
     const fetchFeatured = async () => {
       try {
@@ -29,7 +21,7 @@ export function Recent() {
             data.designs.map((design: any) => ({
               id: design.id,
               img: design.imageUrl,
-            }))
+            })),
           );
         }
       } catch (error) {
@@ -42,42 +34,6 @@ export function Recent() {
     fetchFeatured();
   }, []);
 
-  const totalPages = Math.ceil(works.length / CARDS_PER_PAGE);
-  const startIndex = page * CARDS_PER_PAGE;
-  const currentCards = works.slice(startIndex, startIndex + CARDS_PER_PAGE);
-
-  const handleNext = () => {
-    if (page < totalPages - 1) {
-      setDirection(1);
-      setPage((prev) => prev + 1);
-    }
-  };
-
-  const handlePrev = () => {
-    if (page > 0) {
-      setDirection(-1);
-      setPage((prev) => prev - 1);
-    }
-  };
-
-  const variants = {
-    enter: (dir: number) => ({
-      x: dir > 0 ? "100%" : "-100%",
-      opacity: 0,
-      position: "absolute",
-    }),
-    center: {
-      x: 0,
-      opacity: 1,
-      position: "relative",
-    },
-    exit: (dir: number) => ({
-      x: dir > 0 ? "-100%" : "100%",
-      opacity: 0,
-      position: "absolute",
-    }),
-  };
-
   if (loading) return <p className="text-center py-10">Loading designs...</p>;
   if (works.length === 0)
     return (
@@ -86,8 +42,10 @@ export function Recent() {
       </p>
     );
 
+  const repeated = [...works, ...works, ...works];
+
   return (
-    <div className="mx-auto w-full max-w-[950px]">
+    <div className="mx-auto w-full pb-0 max-w-[1100px] overflow-hidden">
       <Dialog
         open={selectedImage !== null}
         onOpenChange={(open) => {
@@ -95,53 +53,31 @@ export function Recent() {
         }}
       >
         <DialogTitle></DialogTitle>
-        {/* CARD WRAPPER */}
-        <div className="relative overflow-hidden w-full h-[450px] mb-4">
-          <AnimatePresence initial={false} custom={direction}>
-            <motion.div
-              key={page}
-              custom={direction}
-              variants={variants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{ duration: 0.6, ease: "easeInOut" }}
-              className="flex gap-4 justify-start w-full absolute top-0 left-0"
-            >
-              {currentCards.map((w) => (
-                <DialogTrigger asChild key={w.id}>
-                  <div
-                    className="w-[300px] h-[400px] flex-shrink-0 cursor-pointer hover:card-hover-effect"
-                    onClick={() => setSelectedImage(w.img)}
-                  >
-                    <Picture
-                      src={w.img}
-                      alt=""
-                      className="w-full h-full object-cover rounded-md"
-                    />
-                  </div>
-                </DialogTrigger>
-              ))}
-            </motion.div>
-          </AnimatePresence>
-        </div>
 
-        {/* NAV BUTTONS */}
-        <div className="flex justify-center gap-4 mb-6">
-          <Button
-            onClick={handlePrev}
-            disabled={page === 0}
-            className="rounded-full h-10 w-10 bg-transparent text-[#030142] border-2 hover:bg-[#030142] hover:-translate-y-1 hover:text-white transition-all duration-500 border-[#030142]"
+        {/* INFINITE SCROLL TRACK */}
+        <div className="relative w-full h-[450px] mb-4 overflow-hidden">
+          <div
+            className="flex gap-4 absolute top-0 left-0 h-full"
+            style={{
+              animation: `scroll-cards ${works.length * 8}s linear infinite`,
+              width: `max-content`,
+            }}
           >
-            <ChevronLeft />
-          </Button>
-          <Button
-            onClick={handleNext}
-            disabled={page >= totalPages - 1}
-            className="rounded-full h-10 w-10 bg-transparent text-[#030142] border-2 hover:bg-[#030142] hover:-translate-y-1 hover:text-white transition-all duration-500 border-[#030142]"
-          >
-            <ChevronRight />
-          </Button>
+            {repeated.map((w, i) => (
+              <DialogTrigger asChild key={`${w.id}-${i}`}>
+                <div
+                  className="w-[360px] h-[450px] flex-shrink-0 cursor-pointer hover:card-hover-effect"
+                  onClick={() => setSelectedImage(w.img)}
+                >
+                  <Picture
+                    src={w.img}
+                    alt=""
+                    className="w-full h-full object-cover rounded-md"
+                  />
+                </div>
+              </DialogTrigger>
+            ))}
+          </div>
         </div>
 
         {/* IMAGE MODAL */}
@@ -157,6 +93,13 @@ export function Recent() {
           </DialogContent>
         )}
       </Dialog>
+
+      <style>{`
+        @keyframes scroll-cards {
+          0%   { transform: translateX(0); }
+          100% { transform: translateX(calc(-${works.length} * (380px + 1.5rem))); }
+        }
+      `}</style>
     </div>
   );
 }
